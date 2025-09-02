@@ -1,0 +1,11 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schemas.android.com/apk/res/android
+http://schemas.android.com/apk/res/android ">
+    <solid android:color="#FFFFFF" /> <!-- iç arka plan -->
+    <stroke
+        android:width="2dp"
+        android:color="#000000" /> <!-- siyah çerçeve -->
+    <corners android:radius="8dp" />
+</shape>
