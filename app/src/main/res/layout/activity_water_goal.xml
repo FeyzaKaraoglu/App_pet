@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Günlük hedef belirleme -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set your daily water goal:"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/etGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter daily goal (ml)"
+        android:inputType="number"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnSetGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set Goal"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Su ekleme bölümü -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log your water intake:"
+        android:textSize="16sp"
+        android:layout_marginTop="24dp"/>
+
+    <EditText
+        android:id="@+id/etDrink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter amount (ml)"
+        android:inputType="number"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnAddDrink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Water"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnAddCup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add 1 Cup (200 ml)"
+        android:layout_marginTop="8dp"/>
+
+    <!-- İlerleme göstergesi -->
+    <TextView
+        android:id="@+id/tvProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Progress: 0 ml"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Geri dön butonu -->
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Back to Main Page" />
+
+</LinearLayout>

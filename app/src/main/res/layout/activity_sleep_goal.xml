@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set your sleep goal (hours):"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/etSleepGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter hours"
+        android:inputType="number"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnSaveGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Goal"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tvSleepTimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Elapsed: 0h 0m"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/btnStartSleep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Sleep"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/btnStopSleep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stop Sleep"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tvSleepProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Progress: 0/0 h"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Back to Main Page" />
+</LinearLayout>

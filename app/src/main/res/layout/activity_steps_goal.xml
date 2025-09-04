@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/etStepGoal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter daily step goal"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/btnSetStepGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Goal" />
+
+    <TextView
+        android:id="@+id/tvStepProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Steps: 0 / 0"
+        android:textSize="20sp"
+        android:paddingTop="10dp" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back" />
+
+</LinearLayout>

@@ -1,15 +1,15 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.app.AlertDialog;
-
 import androidx.appcompat.app.AppCompatActivity;
+import android.app.AlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
     Button btnSettings;
+    Button btnGoals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,18 +17,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnSettings = findViewById(R.id.btnSettings);
+        btnGoals = findViewById(R.id.btnGoals);
 
-        btnSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAyarlarDialog();
-            }
-        });
+        // Settings menüsü
+        btnSettings.setOnClickListener(v -> showAyarlarDialog());
+
+        // Goals menüsü
+        btnGoals.setOnClickListener(v -> showGoalsDialog());
     }
 
     private void showAyarlarDialog() {
-        // Ayarlar menüsü seçenekleri
-        String[] options = {"Languages", "pet name", "color", "reset"};
+        String[] options = {"Languages", "Pet name", "Color", "Reset"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Settings");
@@ -36,23 +35,42 @@ public class MainActivity extends AppCompatActivity {
             switch (which) {
                 case 0:
                     // Dil değiştir
-                    // Buraya dil değiştirme kodunu yaz
                     break;
                 case 1:
                     // Pet ismi değiştir
-                    // Buraya pet ismi değiştirme kodunu yaz
                     break;
                 case 2:
                     // Renk değiştir
-                    // Buraya renk değiştirme kodunu yaz
                     break;
                 case 3:
                     // Sıfırla
-                    // Buraya sıfırlama kodunu yaz
                     break;
             }
         });
+        builder.show();
+    }
 
+    private void showGoalsDialog() {
+        String[] options = {"Water Goal", "Steps Goal", "Sleeping Goal", "Focusing Goal"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Goals");
+        builder.setItems(options, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    startActivity(new Intent(this, WaterGoalActivity.class));
+                    break;
+                case 1:
+                    startActivity(new Intent(this, StepsGoalActivity.class));
+                    break;
+                case 2:
+                    startActivity(new Intent(this, SleepGoalActivity.class));
+                    break;
+                case 3:
+                    startActivity(new Intent(this, FocusGoalActivity.class));
+                    break;
+            }
+        });
         builder.show();
     }
 }
