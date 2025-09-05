@@ -1,7 +1,7 @@
 package com.example.myapplication;
 
-import android.content.SharedPreferences;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -19,7 +19,7 @@ public class FocusGoalActivity extends AppCompatActivity {
 
     EditText etFocusGoal;
     Button btnSaveGoal, btnStartFocus, btnStopFocus, btnBack;
-    TextView tvTimer, tvProgress;
+    TextView tvFocusTimer, tvFocusProgress;
 
     SharedPreferences prefs;
 
@@ -37,7 +37,7 @@ public class FocusGoalActivity extends AppCompatActivity {
                 long elapsedMillis = System.currentTimeMillis() - startTime;
                 int minutes = (int) (elapsedMillis / 1000) / 60;
                 int seconds = (int) (elapsedMillis / 1000) % 60;
-                tvTimer.setText(String.format("Focus Time: %02d:%02d", minutes, seconds));
+                tvFocusTimer.setText(String.format("Elapsed: %02d:%02d", minutes, seconds));
                 handler.postDelayed(this, 1000);
             }
         }
@@ -48,14 +48,13 @@ public class FocusGoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_focus_goal);
 
-        // View'leri bağla
         etFocusGoal = findViewById(R.id.etFocusGoal);
         btnSaveGoal = findViewById(R.id.btnSaveGoal);
         btnStartFocus = findViewById(R.id.btnStartFocus);
         btnStopFocus = findViewById(R.id.btnStopFocus);
         btnBack = findViewById(R.id.btnBack);
-        tvTimer = findViewById(R.id.tvTimer);
-        tvProgress = findViewById(R.id.tvProgress);
+        tvFocusTimer = findViewById(R.id.tvFocusTimer);
+        tvFocusProgress = findViewById(R.id.tvFocusProgress);
 
         prefs = getSharedPreferences("FocusPrefs", MODE_PRIVATE);
 
@@ -63,54 +62,38 @@ public class FocusGoalActivity extends AppCompatActivity {
         loadGoalAndProgress();
         updateButtonStates();
 
-        // Save Goal button
-        btnSaveGoal.setOnClickListener(v -> {
-            String text = etFocusGoal.getText().toString().trim();
-            if (!text.isEmpty()) {
-                goalMinutes = Integer.parseInt(text);
-                if (goalMinutes > 0) {
-                    prefs.edit().putInt("goal", goalMinutes).apply();
-                    updateProgress();
-                    Toast.makeText(this, "Goal saved: " + goalMinutes + " minutes", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Please enter a positive number", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, "Please enter your goal in minutes", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Start Focus button
+        btnSaveGoal.setOnClickListener(v -> saveGoal());
         btnStartFocus.setOnClickListener(v -> startFocusMode());
-
-        // Stop Focus button
         btnStopFocus.setOnClickListener(v -> stopFocusMode());
+        btnBack.setOnClickListener(v -> goBack());
+    }
 
-        // 🔹 Back button → MainActivity’ye dön
-        btnBack.setOnClickListener(v -> {
-            if (isRunning) {
-                Toast.makeText(this, "Please stop focus mode first", Toast.LENGTH_SHORT).show();
+    private void saveGoal() {
+        String text = etFocusGoal.getText().toString().trim();
+        if (!text.isEmpty()) {
+            goalMinutes = Integer.parseInt(text);
+            if (goalMinutes > 0) {
+                prefs.edit().putInt("goal", goalMinutes).apply();
+                updateProgress();
+                Toast.makeText(this, "Goal saved: " + goalMinutes + " minutes", Toast.LENGTH_SHORT).show();
             } else {
-                Intent intent = new Intent(FocusGoalActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                Toast.makeText(this, "Enter positive number", Toast.LENGTH_SHORT).show();
             }
-        });
+        } else {
+            Toast.makeText(this, "Enter your goal", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void startFocusMode() {
         if (isRunning) return;
-
         if (goalMinutes <= 0) {
-            Toast.makeText(this, "Please set a goal first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Set a goal first", Toast.LENGTH_SHORT).show();
             return;
         }
 
         isRunning = true;
         startTime = System.currentTimeMillis();
         updateButtonStates();
-        Toast.makeText(this, "Focus mode started! Stay focused!", Toast.LENGTH_SHORT).show();
         handler.post(timerRunnable);
     }
 
@@ -122,27 +105,28 @@ public class FocusGoalActivity extends AppCompatActivity {
 
         long elapsedMillis = System.currentTimeMillis() - startTime;
         int minutes = (int) (elapsedMillis / 1000) / 60;
-        int seconds = (int) (elapsedMillis / 1000) % 60;
 
-        if (minutes >= 1) {
+        if (minutes > 0) {
             totalFocused += minutes;
             prefs.edit().putInt("progress", totalFocused).apply();
-            Toast.makeText(this, "Great job! Focused " + minutes + "m " + seconds + "s", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "Focus session too short: " + seconds + " seconds", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Focused " + minutes + " min", Toast.LENGTH_SHORT).show();
         }
 
         updateProgress();
         updateButtonStates();
-        tvTimer.setText("Focus Time: 00:00");
+        tvFocusTimer.setText("Elapsed: 00:00");
+
+        // 🔹 Hedef tamamlandıysa MainActivity'yi bilgilendir
+        if (goalMinutes > 0 && totalFocused >= goalMinutes) {
+            if (MainActivity.context != null) {
+                MainActivity.context.markGoalCompleted("focus");
+            }
+        }
     }
 
     private void updateProgress() {
-        String progressText = "Daily Progress: " + totalFocused + "/" + goalMinutes + " min";
-        if (goalMinutes > 0 && totalFocused >= goalMinutes) {
-            progressText += " ✓ GOAL ACHIEVED!";
-        }
-        tvProgress.setText(progressText);
+        tvFocusProgress.setText("Progress: " + totalFocused + " / " + goalMinutes + " min" +
+                ((goalMinutes > 0 && totalFocused >= goalMinutes) ? " ✓ GOAL ACHIEVED!" : ""));
     }
 
     private void updateButtonStates() {
@@ -150,19 +134,14 @@ public class FocusGoalActivity extends AppCompatActivity {
         btnStopFocus.setEnabled(isRunning);
         btnSaveGoal.setEnabled(!isRunning);
         etFocusGoal.setEnabled(!isRunning);
-
-        btnStartFocus.setText(isRunning ? "Focus Mode Active..." : "Start Focus Mode");
-        btnStopFocus.setText("Stop Focus Mode");
     }
 
     private void loadGoalAndProgress() {
         goalMinutes = prefs.getInt("goal", 0);
         totalFocused = prefs.getInt("progress", 0);
-        if (goalMinutes > 0) {
-            etFocusGoal.setText(String.valueOf(goalMinutes));
-        }
+        if (goalMinutes > 0) etFocusGoal.setText(String.valueOf(goalMinutes));
         updateProgress();
-        tvTimer.setText("Focus Time: 00:00");
+        tvFocusTimer.setText("Elapsed: 00:00");
     }
 
     private void resetDailyIfNeeded() {
@@ -170,18 +149,23 @@ public class FocusGoalActivity extends AppCompatActivity {
         String today = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
         if (!today.equals(lastDate)) {
             prefs.edit().putInt("progress", 0).putString("lastDate", today).apply();
+            totalFocused = 0;
         }
     }
 
-    @Override
-    public void onBackPressed() {
+    private void goBack() {
         if (isRunning) {
-            Toast.makeText(this, "Please stop focus mode first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Stop focus mode first", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(FocusGoalActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        goBack();
     }
 }

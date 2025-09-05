@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-feature android:name="android.hardware.sensor.stepcounter" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.stepdetector" android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -25,9 +28,6 @@
             android:exported="false" />
         <activity
             android:name=".WaterGoalActivity"
-            android:exported="false" />
-        <activity
-            android:name=".GoalsActivity"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"

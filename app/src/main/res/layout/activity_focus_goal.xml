@@ -1,69 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="16dp"
+    android:background="#FFFDE7">
 
-    <!-- Hedef belirleme -->
+    <!-- Header -->
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/headerTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set your focus goal (minutes):"
-        android:textSize="16sp"/>
+        android:text="🎯 Focus Goal"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#F57F17"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <EditText
-        android:id="@+id/etFocusGoal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter minutes"
-        android:inputType="number"
-        android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/btnSaveGoal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save Goal"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Kronometre -->
-    <TextView
-        android:id="@+id/tvTimer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Elapsed: 0m 0s"
-        android:textSize="18sp"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/btnStartFocus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Start Focus Mode"
-        android:layout_marginTop="16dp"/>
-
-    <Button
-        android:id="@+id/btnStopFocus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Stop Focus Mode"
-        android:layout_marginTop="8dp"/>
-
-    <!-- İlerleme -->
-    <TextView
-        android:id="@+id/tvProgress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Progress: 0/0 min"
-        android:textSize="18sp"
-        android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="match_parent"
+    <!-- Goal Setting Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/goalCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Back to Main Page" />
-</LinearLayout>
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/headerTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daily Focus Goal (minutes)"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#333"
+                android:layout_marginBottom="8dp"/>
+
+            <EditText
+                android:id="@+id/etFocusGoal"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Enter minutes (e.g., 30)"
+                android:inputType="number"
+                android:padding="12dp"
+                android:background="@drawable/edittext_background"
+                android:layout_marginBottom="12dp"/>
+
+            <Button
+                android:id="@+id/btnSaveGoal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Focus Goal"
+                android:backgroundTint="#FBC02D"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Progress / Timer Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/progressCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/goalCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvFocusTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Elapsed: 0m 0s"
+                android:textSize="16sp"
+                android:textColor="#666"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvFocusProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progress: 0 / 0 min"
+                android:textSize="16sp"
+                android:textColor="#666"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Control Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/controlCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/progressCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/btnStartFocus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start Focus Mode"
+                android:backgroundTint="#F57F17"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp"
+                app:cornerRadius="8dp"/>
+
+            <Button
+                android:id="@+id/btnStopFocus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stop Focus Mode"
+                android:backgroundTint="#D32F2F"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Back Button -->
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="← Back to Main"
+        android:backgroundTint="#757575"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintTop_toBottomOf="@id/controlCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

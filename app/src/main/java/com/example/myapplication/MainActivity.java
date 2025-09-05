@@ -16,6 +16,9 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    // ✅ Eklenen satır: static context
+    public static MainActivity context;
+
     Button btnSettings;
     Button btnGoals;
     Button btnGame;
@@ -37,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // ✅ Eklenen satır: context atama
+        context = this;
+
         initializeViews();
         setupPreferences();
         checkDailyReset();
@@ -47,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Update chart every time we return to main activity
         updateGoalChart();
     }
 
@@ -73,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         String today = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
         String savedDate = goalPrefs.getString("lastGoalDate", today);
 
-        // Reset goal completion status for new day
         if (!today.equals(savedDate)) {
             SharedPreferences.Editor editor = goalPrefs.edit();
             editor.putBoolean("waterCompleted", false);
@@ -84,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
             editor.apply();
         }
 
-        // Load current day's completion status
         loadGoalCompletionStatus();
     }
 
@@ -97,14 +100,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateGoalChart() {
         loadGoalCompletionStatus();
-
-        // Update each life indicator based on goal completion
         updateLifeIndicator(lvl1, waterGoalCompleted, "💧");
         updateLifeIndicator(lvl2, stepsGoalCompleted, "👟");
         updateLifeIndicator(lvl3, sleepGoalCompleted, "😴");
         updateLifeIndicator(lvl4, focusGoalCompleted, "🎯");
-
-        // Check if mini-game should be unlocked
         updateGameButton();
     }
 
@@ -120,14 +119,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateGameButton() {
         int completedGoals = getCompletedGoalsCount();
-
         if (completedGoals == 4) {
-            // All goals completed - unlock mini-game
             btnGame.setText("🎮 Play Mini-Game!");
             btnGame.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_green_light));
             btnGame.setEnabled(true);
         } else {
-            // Show progress towards unlocking game
             btnGame.setText("Complete " + (4 - completedGoals) + " more goals");
             btnGame.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
             btnGame.setEnabled(false);
@@ -172,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
         updateGoalChart();
 
-        // Check if all goals are completed
         if (getCompletedGoalsCount() == 4) {
             showAllGoalsCompletedMessage();
         }
@@ -191,16 +186,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        // Settings menu
         btnSettings.setOnClickListener(v -> showAyarlarDialog());
-
-        // Goals menu
         btnGoals.setOnClickListener(v -> showGoalsDialog());
-
-        // Game button
         btnGame.setOnClickListener(v -> {
             if (getCompletedGoalsCount() == 4) {
-                // Launch mini-game activity
                 startMiniGame();
             } else {
                 Toast.makeText(this, "Complete all daily goals to unlock mini-games!", Toast.LENGTH_SHORT).show();
@@ -209,40 +198,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startMiniGame() {
-        // You can create different mini-games and randomize
         String[] games = {"Memory Game", "Pet Care Game", "Puzzle Game"};
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose a Mini-Game");
         builder.setItems(games, (dialog, which) -> {
             Toast.makeText(this, "Starting " + games[which] + "...", Toast.LENGTH_SHORT).show();
-            // Here you would start the actual game activity
-            // startActivity(new Intent(this, MiniGameActivity.class));
         });
         builder.show();
     }
 
     private void showAyarlarDialog() {
         String[] options = {"Languages", "Pet name", "Color", "Reset Progress"};
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Settings");
         builder.setItems(options, (dialog, which) -> {
             switch (which) {
                 case 0:
-                    // Language change
                     Toast.makeText(this, "Language settings coming soon!", Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
-                    // Pet name change
                     changePetName();
                     break;
                 case 2:
-                    // Color change
                     Toast.makeText(this, "Color settings coming soon!", Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
-                    // Reset progress
                     resetDailyProgress();
                     break;
             }
@@ -251,14 +231,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changePetName() {
-        // Simple pet name change dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Change Pet Name");
-
         final android.widget.EditText input = new android.widget.EditText(this);
         input.setHint("Enter new name");
         builder.setView(input);
-
         builder.setPositiveButton("OK", (dialog, which) -> {
             String newName = input.getText().toString().trim();
             if (!newName.isEmpty()) {
@@ -283,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("focusCompleted", false);
             editor.apply();
 
-            // Also reset individual goal progress
             getSharedPreferences("waterPrefs", MODE_PRIVATE).edit().putInt("totalDrank", 0).apply();
 
             updateGoalChart();
@@ -295,7 +271,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void showGoalsDialog() {
         String[] options = {"💧 Water Goal", "👟 Steps Goal", "😴 Sleeping Goal", "🎯 Focusing Goal"};
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Daily Goals");
         builder.setItems(options, (dialog, which) -> {
