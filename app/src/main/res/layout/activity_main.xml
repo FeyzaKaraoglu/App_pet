@@ -8,15 +8,15 @@
     android:background="@drawable/background"
     tools:context=".MainActivity">
 
-    <!-- Üst bar: Hedefler ve Ayarlar -->
+    <!-- Top bar: Goals and Settings -->
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:background="#B3E5FC"
+        android:layout_height="80dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="16dp"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -48,17 +48,148 @@
             app:cornerRadius="20dp" />
     </LinearLayout>
 
-    <!-- Ortadaki Pet resmi -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/petCard"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="10dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+    <!-- Goal Progress Chart (Lives) - Positioned above pet -->
+    <LinearLayout
+        android:id="@+id/goalProgressLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/level_container_bg"
+        android:orientation="vertical"
+        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Daily Goals Progress"
+            android:textColor="#333"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="4dp">
+
+                <TextView
+                    android:id="@+id/lvl1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/level_box_shape"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:layout_margin="2dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Water"
+                    android:textSize="10sp"
+                    android:textColor="#666"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="4dp">
+
+                <TextView
+                    android:id="@+id/lvl2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/level_box_shape"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:layout_margin="2dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Steps"
+                    android:textSize="10sp"
+                    android:textColor="#666"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="4dp">
+
+                <TextView
+                    android:id="@+id/lvl3"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/level_box_shape"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:layout_margin="2dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sleep"
+                    android:textSize="10sp"
+                    android:textColor="#666"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_margin="4dp">
+
+                <TextView
+                    android:id="@+id/lvl4"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/level_box_shape"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:layout_margin="2dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Focus"
+                    android:textSize="10sp"
+                    android:textColor="#666"
+                    android:layout_marginTop="2dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Pet Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/petCard"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/goalProgressLayout">
 
         <ImageView
             android:id="@+id/petImage"
@@ -68,101 +199,44 @@
             android:src="@mipmap/ic_launcher" />
     </androidx.cardview.widget.CardView>
 
-    <!-- Level kutucukları (pet kartının DIŞ ÜST SAĞINDA) -->
-
-    <!-- Alt bar: Oyun -->
-
-    <LinearLayout
-        android:id="@+id/levelLayout"
+    <!-- Pet Name -->
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/level_container_bg"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@id/petCard"
-        app:layout_constraintEnd_toEndOf="@id/petCard">
+        android:layout_marginTop="16dp"
+        android:text="Dinozorcuk"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#333"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/petCard" />
 
-        <TextView
-            android:id="@+id/lvl1"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/level_box_shape" />
-
-        <TextView
-            android:id="@+id/lvl2"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/level_box_shape" />
-
-        <TextView
-            android:id="@+id/lvl3"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/level_box_shape" />
-
-        <TextView
-            android:id="@+id/lvl5"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_margin="2dp"
-            android:background="@drawable/level_box_shape" />
-
-        <EditText
-            android:id="@+id/editTextText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Level:"
-            android:textColorLink="#06AF6E" />
-    </LinearLayout>
-
+    <!-- Bottom bar: Game -->
     <LinearLayout
         android:id="@+id/bottomBar"
-        android:layout_width="740dp"
-        android:layout_height="165dp"
-        android:background="#B3E5FC"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="16dp"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView">
 
         <Button
             android:id="@+id/btnGame"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#FF9800"
+            android:enabled="false"
             android:text="Game"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:cornerRadius="24dp" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/lvl4"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_margin="2dp"
-        android:background="@drawable/level_box_shape"
-        tools:layout_editor_absoluteX="436dp"
-        tools:layout_editor_absoluteY="292dp" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="212dp"
-        android:text="Dinozorcuk"
-        app:layout_constraintBottom_toBottomOf="@+id/bottomBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

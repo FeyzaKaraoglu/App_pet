@@ -1,79 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:background="#E3F2FD"
+    android:padding="16dp"
+    tools:context=".WaterGoalActivity">
 
-    <!-- Günlük hedef belirleme -->
+    <!-- Header -->
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/headerTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set your daily water goal:"
-        android:textSize="16sp"
-        android:layout_marginTop="8dp"/>
+        android:text="💧 Water Goal"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#1976D2"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/etGoal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter daily goal (ml)"
-        android:inputType="number"
-        android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/btnSetGoal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Set Goal"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Su ekleme bölümü -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Log your water intake:"
-        android:textSize="16sp"
-        android:layout_marginTop="24dp"/>
-
-    <EditText
-        android:id="@+id/etDrink"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter amount (ml)"
-        android:inputType="number"
-        android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/btnAddDrink"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Water"
-        android:layout_marginTop="8dp"/>
-
-    <Button
-        android:id="@+id/btnAddCup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add 1 Cup (200 ml)"
-        android:layout_marginTop="8dp"/>
-
-    <!-- İlerleme göstergesi -->
-    <TextView
-        android:id="@+id/tvProgress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Progress: 0 ml"
-        android:textSize="18sp"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Geri dön butonu -->
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="match_parent"
+    <!-- Goal Setting Section -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/goalCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Back to Main Page" />
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerTitle">
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daily Goal (ml)"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#333"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/etGoal"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="Enter daily water goal (e.g., 2000)"
+                android:inputType="number"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp" />
+
+            <Button
+                android:id="@+id/btnSetGoal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Set Daily Goal"
+                android:backgroundTint="#4CAF50"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Progress Section -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/progressCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/goalCard">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today's Progress"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#333"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/tvProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progress: 0 / 2000 ml"
+                android:textSize="16sp"
+                android:textColor="#666"
+                android:layout_marginBottom="8dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:max="100"
+                android:progress="0"
+                android:progressTint="#2196F3"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💧 Set your goal to start!"
+                android:textSize="14sp"
+                android:textColor="#666" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Add Water Section -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/addWaterCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressCard">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Water Intake"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#333"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Custom Amount Input -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <EditText
+                    android:id="@+id/etDrink"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:hint="Custom amount (ml)"
+                    android:inputType="number"
+                    android:background="@drawable/edittext_background"
+                    android:padding="12dp"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btnAddDrink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="Add Water"
+                    android:backgroundTint="#2196F3"
+                    android:textColor="@android:color/white"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+
+            <!-- Quick Add Button -->
+            <Button
+                android:id="@+id/btnAddCup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🥤 Add Cup (200ml)"
+                android:backgroundTint="#FF9800"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:cornerRadius="8dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Back Button -->
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="← Back to Main"
+        android:backgroundTint="#757575"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addWaterCard" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

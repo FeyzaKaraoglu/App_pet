@@ -28,7 +28,8 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
     int stepsAtReset = 0;
     int todaySteps = 0;
 
-    SharedPreferences prefs;
+    SharedPreferences stepsPrefs;
+    SharedPreferences goalPrefs;
     SensorManager sensorManager;
     Sensor stepCounter;
 
@@ -44,19 +45,21 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
         btnBack = findViewById(R.id.btnBack);
         tvStepProgress = findViewById(R.id.tvStepProgress);
 
-        prefs = getSharedPreferences("stepsPrefs", MODE_PRIVATE);
+        stepsPrefs = getSharedPreferences("stepsPrefs", MODE_PRIVATE);
+        goalPrefs = getSharedPreferences("goalCompletionPrefs", MODE_PRIVATE);
 
         today = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
-        String savedDate = prefs.getString("lastDate", today);
+        String savedDate = stepsPrefs.getString("lastDate", today);
 
-        dailyStepGoal = prefs.getInt("dailyStepGoal", 0);
+        dailyStepGoal = stepsPrefs.getInt("dailyStepGoal", 0);
 
         if (!today.equals(savedDate)) {
             stepsAtReset = 0;
-            prefs.edit().putString("lastDate", today).apply();
-            prefs.edit().putInt("stepsAtReset", 0).apply();
+            stepsPrefs.edit().putString("lastDate", today).apply();
+            stepsPrefs.edit().putInt("stepsAtReset", 0).apply();
+            stepsPrefs.edit().putInt("todaySteps", 0).apply();
         } else {
-            stepsAtReset = prefs.getInt("stepsAtReset", 0);
+            stepsAtReset = stepsPrefs.getInt("stepsAtReset", 0);
         }
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -77,17 +80,17 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
                 return;
             }
             dailyStepGoal = Integer.parseInt(goalText);
-            stepsAtReset = todaySteps; // yeni hedefte sıfırdan başlat
-            prefs.edit().putInt("dailyStepGoal", dailyStepGoal).apply();
-            prefs.edit().putInt("stepsAtReset", stepsAtReset).apply();
-            prefs.edit().putString("lastDate", today).apply();
+            stepsAtReset = todaySteps; // Yeni hedefte sıfırdan başlat
+            stepsPrefs.edit().putInt("dailyStepGoal", dailyStepGoal).apply();
+            stepsPrefs.edit().putInt("stepsAtReset", stepsAtReset).apply();
+            stepsPrefs.edit().putString("lastDate", today).apply();
 
             updateStepProgress();
             Toast.makeText(this, "Step goal set: " + dailyStepGoal, Toast.LENGTH_SHORT).show();
         });
 
-        // 🔹 Back button → MainActivity
         btnBack.setOnClickListener(v -> {
+            // MainActivity’ye dön
             Intent intent = new Intent(StepsGoalActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -116,8 +119,16 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
             int totalSinceBoot = (int) event.values[0];
             todaySteps = totalSinceBoot - stepsAtReset;
-            prefs.edit().putInt("todaySteps", todaySteps).apply();
+            stepsPrefs.edit().putInt("todaySteps", todaySteps).apply();
             updateStepProgress();
+
+            // Hedef tamamlandıysa goalPrefs güncelle
+            if (dailyStepGoal > 0 && todaySteps >= dailyStepGoal) {
+                boolean alreadyCompleted = goalPrefs.getBoolean("stepsCompleted", false);
+                if (!alreadyCompleted) {
+                    goalPrefs.edit().putBoolean("stepsCompleted", true).apply();
+                }
+            }
         }
     }
 
@@ -125,7 +136,7 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     private void updateStepProgress() {
-        todaySteps = prefs.getInt("todaySteps", 0);
+        todaySteps = stepsPrefs.getInt("todaySteps", 0);
         tvStepProgress.setText("Steps: " + todaySteps + " / " + dailyStepGoal);
     }
 }
