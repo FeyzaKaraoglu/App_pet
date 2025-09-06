@@ -30,6 +30,8 @@ public class FocusGoalActivity extends AppCompatActivity {
     Handler handler = new Handler();
     long startTime;
 
+    public static FocusGoalActivity instance;
+
     Runnable timerRunnable = new Runnable() {
         @Override
         public void run() {
@@ -47,6 +49,8 @@ public class FocusGoalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_focus_goal);
+
+        instance = this;
 
         etFocusGoal = findViewById(R.id.etFocusGoal);
         btnSaveGoal = findViewById(R.id.btnSaveGoal);
@@ -151,6 +155,12 @@ public class FocusGoalActivity extends AppCompatActivity {
             prefs.edit().putInt("progress", 0).putString("lastDate", today).apply();
             totalFocused = 0;
         }
+    }
+
+    public void forceResetFromMain() {
+        totalFocused = 0;
+        prefs.edit().putInt("progress", 0).apply();
+        updateProgress();
     }
 
     private void goBack() {

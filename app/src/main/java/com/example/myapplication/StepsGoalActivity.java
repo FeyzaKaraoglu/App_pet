@@ -10,7 +10,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,8 +34,8 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
     int totalStepsFromSensor = 0;
 
     SharedPreferences stepsPrefs;
-    SharedPreferences goalPrefs;   // ✅ eklendi
-    boolean goalCompleted = false; // ✅ eklendi
+    SharedPreferences goalPrefs;
+    boolean goalCompleted = false;
 
     SensorManager sensorManager;
     Sensor stepCounter;
@@ -46,10 +45,15 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
 
     private static final int PERMISSION_REQUEST_ACTIVITY_RECOGNITION = 1001;
 
+    // ✅ MainActivity’den çağırabilmek için
+    public static StepsGoalActivity instance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps_goal);
+
+        instance = this; // referans atama
 
         etStepGoal = findViewById(R.id.etStepGoal);
         btnSetStepGoal = findViewById(R.id.btnSetStepGoal);
@@ -57,7 +61,7 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
         tvStepProgress = findViewById(R.id.tvStepProgress);
 
         stepsPrefs = getSharedPreferences("stepsPrefs", MODE_PRIVATE);
-        goalPrefs = getSharedPreferences("goalCompletionPrefs", MODE_PRIVATE); // ✅
+        goalPrefs = getSharedPreferences("goalCompletionPrefs", MODE_PRIVATE);
 
         today = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
         String savedDate = stepsPrefs.getString("lastDate", "");
@@ -78,7 +82,7 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
         } else {
             stepsAtDayStart = stepsPrefs.getInt("stepsAtDayStart", 0);
             todaySteps = stepsPrefs.getInt("todaySteps", 0);
-            goalCompleted = goalPrefs.getBoolean("stepsCompleted", false); // ✅
+            goalCompleted = goalPrefs.getBoolean("stepsCompleted", false);
         }
 
         btnSetStepGoal.setOnClickListener(v -> {
@@ -94,7 +98,7 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
                     return;
                 }
                 stepsPrefs.edit().putInt("dailyStepGoal", dailyStepGoal).apply();
-                goalPrefs.edit().putBoolean("stepsCompleted", false).apply(); // ✅ yeni goal → reset
+                goalPrefs.edit().putBoolean("stepsCompleted", false).apply();
                 goalCompleted = false;
                 updateStepProgress();
                 Toast.makeText(this, "Step goal set: " + dailyStepGoal, Toast.LENGTH_SHORT).show();
@@ -119,7 +123,13 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
                 .putInt("todaySteps", 0)
                 .apply();
 
-        goalPrefs.edit().putBoolean("stepsCompleted", false).apply(); // ✅ reset
+        goalPrefs.edit().putBoolean("stepsCompleted", false).apply();
+    }
+
+    // ✅ MainActivity’den çağrılacak
+    public void forceResetFromMain() {
+        resetDailyProgress();
+        updateStepProgress();
     }
 
     private void checkActivityRecognitionPermission() {
@@ -204,9 +214,8 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
     private void checkGoalCompletion() {
         if (dailyStepGoal > 0 && todaySteps >= dailyStepGoal && !goalCompleted) {
             goalCompleted = true;
-            goalPrefs.edit().putBoolean("stepsCompleted", true).apply(); // ✅ kaydet
+            goalPrefs.edit().putBoolean("stepsCompleted", true).apply();
 
-            // ✅ MainActivity’ye haber ver
             if (MainActivity.context != null) {
                 MainActivity.context.markGoalCompleted("steps");
             }
@@ -216,11 +225,7 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        if (accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE) {
-            Toast.makeText(this, "Step sensor accuracy is low", Toast.LENGTH_SHORT).show();
-        }
-    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     private void updateStepProgress() {
         String progressText = "Steps: " + todaySteps + " / " + dailyStepGoal;

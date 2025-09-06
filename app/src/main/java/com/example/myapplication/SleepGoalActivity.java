@@ -45,6 +45,9 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
     Handler handler = new Handler();
     long startTime;
 
+    // ✅ MainActivity’den çağırabilmek için
+    public static SleepGoalActivity instance;
+
     Runnable sleepRunnable = new Runnable() {
         @Override
         public void run() {
@@ -58,7 +61,6 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         }
     };
 
-    // Runnable to reset wake detection flags after some time
     Runnable resetWakeFlags = new Runnable() {
         @Override
         public void run() {
@@ -71,6 +73,8 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sleep_goal);
+
+        instance = this; // ✅ static instance atama
 
         etSleepGoal = findViewById(R.id.etSleepGoal);
         btnSaveGoal = findViewById(R.id.btnSaveGoal);
@@ -89,44 +93,34 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         loadGoalAndProgress();
         updateButtonStates();
 
-        btnSaveGoal.setOnClickListener(v -> {
-            String text = etSleepGoal.getText().toString().trim();
-            if (!text.isEmpty()) {
-                try {
-                    goalHours = Integer.parseInt(text);
-                    if (goalHours <= 0) {
-                        Toast.makeText(this, "Please enter a positive number!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    prefs.edit().putInt("goal", goalHours).apply();
-                    updateProgress();
-                    Toast.makeText(this, "Sleep goal set: " + goalHours + "h", Toast.LENGTH_SHORT).show();
-                } catch (NumberFormatException e) {
-                    Toast.makeText(this, "Please enter a valid number!", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, "Please enter a sleep goal!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        btnSaveGoal.setOnClickListener(v -> saveGoal());
         btnStartSleep.setOnClickListener(v -> startSleepMode());
         btnStopSleep.setOnClickListener(v -> stopSleepMode());
+        btnBack.setOnClickListener(v -> goBack());
+    }
 
-        btnBack.setOnClickListener(v -> {
-            if (isSleeping) {
-                Toast.makeText(this, "Please stop sleep mode first", Toast.LENGTH_SHORT).show();
-            } else {
-                Intent intent = new Intent(SleepGoalActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+    private void saveGoal() {
+        String text = etSleepGoal.getText().toString().trim();
+        if (!text.isEmpty()) {
+            try {
+                goalHours = Integer.parseInt(text);
+                if (goalHours <= 0) {
+                    Toast.makeText(this, "Please enter a positive number!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                prefs.edit().putInt("goal", goalHours).apply();
+                updateProgress();
+                Toast.makeText(this, "Sleep goal set: " + goalHours + "h", Toast.LENGTH_SHORT).show();
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Please enter a valid number!", Toast.LENGTH_SHORT).show();
             }
-        });
+        } else {
+            Toast.makeText(this, "Please enter a sleep goal!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void startSleepMode() {
         if (isSleeping) return;
-
         if (goalHours <= 0) {
             Toast.makeText(this, "Please set a sleep goal first", Toast.LENGTH_SHORT).show();
             return;
@@ -134,24 +128,12 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
 
         isSleeping = true;
         startTime = System.currentTimeMillis();
-
-        // Reset wake detection flags
         lightThresholdMet = false;
         movementThresholdMet = false;
         lastWakeCheckTime = 0;
 
-        // Register sensors
-        if (lightSensor != null) {
-            sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        } else {
-            Toast.makeText(this, "Light sensor not available", Toast.LENGTH_SHORT).show();
-        }
-
-        if (accelSensor != null) {
-            sensorManager.registerListener(this, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        } else {
-            Toast.makeText(this, "Accelerometer not available", Toast.LENGTH_SHORT).show();
-        }
+        if (lightSensor != null) sensorManager.registerListener(this, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        if (accelSensor != null) sensorManager.registerListener(this, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
 
         handler.post(sleepRunnable);
         updateButtonStates();
@@ -177,14 +159,11 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
 
         Toast.makeText(this, "Sleep session recorded: " + minutesElapsed + " minutes", Toast.LENGTH_SHORT).show();
 
-        // Check if goal is completed and notify MainActivity
-        if (totalSleptMinutes / 60 >= goalHours) {
-            if (MainActivity.context != null) {
-                MainActivity.context.markGoalCompleted("sleep");
-            }
+        // ✅ MainActivity’ye bildirme
+        if (totalSleptMinutes / 60 >= goalHours && MainActivity.context != null) {
+            MainActivity.context.markGoalCompleted("sleep");
         }
 
-        // Reset wake detection flags
         lightThresholdMet = false;
         movementThresholdMet = false;
     }
@@ -202,14 +181,6 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         btnStopSleep.setEnabled(isSleeping);
         btnSaveGoal.setEnabled(!isSleeping);
         etSleepGoal.setEnabled(!isSleeping);
-
-        if (isSleeping) {
-            btnStartSleep.setText("Sleep Mode Active...");
-            btnStopSleep.setText("Stop Sleep Mode");
-        } else {
-            btnStartSleep.setText("Start Sleep Mode");
-            btnStopSleep.setText("Stop Sleep Mode");
-        }
     }
 
     private void loadGoalAndProgress() {
@@ -228,8 +199,19 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         }
     }
 
+    // ✅ MainActivity’den çağrılabilir reset fonksiyonu
+    public void forceResetFromMain() {
+        totalSleptMinutes = 0;
+        prefs.edit().putInt("progress", 0).apply();
+        updateProgress();
+    }
+
     @Override
     public void onBackPressed() {
+        goBack();
+    }
+
+    private void goBack() {
         if (isSleeping) {
             Toast.makeText(this, "Please stop sleep mode first", Toast.LENGTH_SHORT).show();
         } else {
@@ -247,22 +229,16 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         long currentTime = System.currentTimeMillis();
 
         if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
-            float lux = event.values[0];
-            if (lux > LIGHT_WAKE_THRESHOLD) {
+            if (event.values[0] > LIGHT_WAKE_THRESHOLD) {
                 lightThresholdMet = true;
                 checkWakeUp(currentTime);
             }
         }
 
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-
-            // Calculate acceleration magnitude excluding gravity
+            float x = event.values[0], y = event.values[1], z = event.values[2];
             double magnitude = Math.sqrt(x*x + y*y + z*z);
             double acceleration = Math.abs(magnitude - SensorManager.GRAVITY_EARTH);
-
             if (acceleration > MOVEMENT_WAKE_THRESHOLD) {
                 movementThresholdMet = true;
                 checkWakeUp(currentTime);
@@ -271,32 +247,17 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
     }
 
     private void checkWakeUp(long currentTime) {
-        // Check if both conditions are met and we're not in cooldown period
         if (lightThresholdMet && movementThresholdMet &&
                 (currentTime - lastWakeCheckTime) > WAKE_CHECK_COOLDOWN) {
-
             lastWakeCheckTime = currentTime;
-
-            // Show toast for debugging
             Toast.makeText(this, "Wake-up detected: Light + Movement", Toast.LENGTH_SHORT).show();
-
-            // Stop sleep mode
             stopSleepMode();
         } else if (lightThresholdMet || movementThresholdMet) {
-            // Reset flags after 10 seconds if only one condition is met
             handler.removeCallbacks(resetWakeFlags);
             handler.postDelayed(resetWakeFlags, 10000);
         }
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        if (accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE) {
-            if (sensor.getType() == Sensor.TYPE_LIGHT) {
-                Toast.makeText(this, "Light sensor accuracy is low", Toast.LENGTH_SHORT).show();
-            } else if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-                Toast.makeText(this, "Accelerometer accuracy is low", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 }

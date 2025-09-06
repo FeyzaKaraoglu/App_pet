@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,20 +15,17 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    // ✅ Eklenen satır: static context
     public static MainActivity context;
 
     Button btnSettings;
     Button btnGoals;
     Button btnGame;
 
-    // Goal completion indicators (lives)
     TextView lvl1, lvl2, lvl3, lvl4;
     TextView petNameView;
 
     SharedPreferences goalPrefs;
 
-    // Goal completion status
     boolean waterGoalCompleted = false;
     boolean stepsGoalCompleted = false;
     boolean sleepGoalCompleted = false;
@@ -40,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // ✅ Eklenen satır: context atama
         context = this;
 
         initializeViews();
@@ -261,6 +256,18 @@ public class MainActivity extends AppCompatActivity {
             editor.apply();
 
             getSharedPreferences("waterPrefs", MODE_PRIVATE).edit().putInt("totalDrank", 0).apply();
+
+            if (StepsGoalActivity.instance != null) {
+                StepsGoalActivity.instance.forceResetFromMain();
+            }
+
+            if (SleepGoalActivity.instance != null) {
+                SleepGoalActivity.instance.forceResetFromMain();
+            }
+
+            if (FocusGoalActivity.instance != null) {
+                FocusGoalActivity.instance.forceResetFromMain();
+            }
 
             updateGoalChart();
             Toast.makeText(this, "Daily progress reset!", Toast.LENGTH_SHORT).show();
