@@ -28,7 +28,7 @@ public class WaterGoalActivity extends AppCompatActivity {
 
     int dailyGoal = 0;
     int totalDrank = 0;
-    final int CUP_AMOUNT = 200; // 1 cup = 200 ml
+    final int CUP_AMOUNT = 200;
 
     SharedPreferences prefs;
     SharedPreferences goalPrefs;
@@ -61,10 +61,8 @@ public class WaterGoalActivity extends AppCompatActivity {
         btnAddCup = findViewById(R.id.btnAddCup);
         btnBack = findViewById(R.id.btnBack);
         tvProgress = findViewById(R.id.tvProgress);
-
-        // Add these views to your XML layout
-        tvStatus = findViewById(R.id.tvStatus); // Add this TextView to show completion status
-        progressBar = findViewById(R.id.progressBar); // Add this ProgressBar to show visual progress
+        tvStatus = findViewById(R.id.tvStatus);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     private void setupPreferences() {
@@ -77,7 +75,7 @@ public class WaterGoalActivity extends AppCompatActivity {
         String savedDate = prefs.getString("lastDate", today);
 
         if (!today.equals(savedDate)) {
-            totalDrank = 0; // new day, reset
+            totalDrank = 0;
             goalCompleted = false;
             prefs.edit().putString("lastDate", today).apply();
             prefs.edit().putInt("totalDrank", totalDrank).apply();
@@ -86,7 +84,7 @@ public class WaterGoalActivity extends AppCompatActivity {
             goalCompleted = goalPrefs.getBoolean("waterCompleted", false);
         }
 
-        dailyGoal = prefs.getInt("dailyGoal", 2000); // Default 2L goal
+        dailyGoal = prefs.getInt("dailyGoal", 2000);
 
         // Set default goal if none exists
         if (dailyGoal == 0) {
@@ -98,16 +96,9 @@ public class WaterGoalActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        // Set daily goal
         btnSetGoal.setOnClickListener(v -> setDailyGoal());
-
-        // Add custom amount of water
         btnAddDrink.setOnClickListener(v -> addCustomWater());
-
-        // Add one cup of water
         btnAddCup.setOnClickListener(v -> addCupOfWater());
-
-        // Back to MainActivity
         btnBack.setOnClickListener(v -> goBackToMain());
     }
 
@@ -126,12 +117,9 @@ public class WaterGoalActivity extends AppCompatActivity {
             }
 
             dailyGoal = newGoal;
-
-            // Reset progress if changing goal
             totalDrank = 0;
             goalCompleted = false;
 
-            // Save to preferences
             String today = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt("dailyGoal", dailyGoal);
@@ -139,7 +127,6 @@ public class WaterGoalActivity extends AppCompatActivity {
             editor.putString("lastDate", today);
             editor.apply();
 
-            // Update goal completion status
             goalPrefs.edit().putBoolean("waterCompleted", false).apply();
 
             updateProgress();
@@ -149,7 +136,6 @@ public class WaterGoalActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid number!", Toast.LENGTH_SHORT).show();
         }
     }
-
     private void addCustomWater() {
         String drinkText = etDrink.getText().toString().trim();
         if (drinkText.isEmpty()) {
@@ -165,13 +151,12 @@ public class WaterGoalActivity extends AppCompatActivity {
             }
 
             addWater(amount);
-            etDrink.setText(""); // Clear input field
+            etDrink.setText("");
 
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Please enter a valid number!", Toast.LENGTH_SHORT).show();
         }
     }
-
     private void addCupOfWater() {
         addWater(CUP_AMOUNT);
     }
@@ -181,51 +166,27 @@ public class WaterGoalActivity extends AppCompatActivity {
             Toast.makeText(this, "Daily water goal already completed! 🎉", Toast.LENGTH_SHORT).show();
             return;
         }
-
         totalDrank += amount;
         updateProgress();
-
-        // Save progress
         prefs.edit().putInt("totalDrank", totalDrank).apply();
-
-        // Check if goal is completed
         if (totalDrank >= dailyGoal && !goalCompleted) {
             goalCompleted = true;
 
-            // Save completion status
             goalPrefs.edit().putBoolean("waterCompleted", true).apply();
 
-            // Notify MainActivity about goal completion
-            notifyGoalCompletion();
-
-            // Show completion message
             Toast.makeText(this, "🎉 Water goal completed! Your pet gained a life!", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Added " + amount + " ml. Keep going!", Toast.LENGTH_SHORT).show();
         }
     }
-
-    private void notifyGoalCompletion() {
-        // This method can be used to send a broadcast or call MainActivity method
-        // For now, we'll use SharedPreferences which MainActivity checks
-
-        // You could also use a more sophisticated approach like:
-        // Intent intent = new Intent("GOAL_COMPLETED");
-        // intent.putExtra("goalType", "water");
-        // sendBroadcast(intent);
-    }
-
     private void updateProgress() {
-        // Update progress text
         tvProgress.setText("Progress: " + totalDrank + " / " + dailyGoal + " ml");
 
-        // Update progress bar
         if (dailyGoal > 0) {
             int percentage = Math.min(100, (totalDrank * 100) / dailyGoal);
             progressBar.setProgress(percentage);
         }
 
-        // Update status
         if (goalCompleted || totalDrank >= dailyGoal) {
             tvStatus.setText("✅ Goal Completed! 🎉");
             tvStatus.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
@@ -235,7 +196,6 @@ public class WaterGoalActivity extends AppCompatActivity {
             tvStatus.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
         }
 
-        // Disable buttons if goal completed
         if (goalCompleted) {
             btnAddDrink.setText("Goal Completed! 🎉");
             btnAddCup.setText("Goal Completed! 🎉");
@@ -248,10 +208,8 @@ public class WaterGoalActivity extends AppCompatActivity {
             btnAddCup.setEnabled(true);
         }
     }
-
     private void goBackToMain() {
         Intent intent = new Intent(WaterGoalActivity.this, MainActivity.class);
-        // Clear stack and return to MainActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();

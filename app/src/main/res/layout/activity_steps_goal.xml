@@ -7,7 +7,6 @@
     android:background="#E3F2FD"
     android:padding="16dp">
 
-    <!-- Header -->
     <TextView
         android:id="@+id/headerTitle"
         android:layout_width="wrap_content"
@@ -20,7 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Goal Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/goalCard"
         android:layout_width="0dp"
@@ -66,7 +64,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Progress Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/progressCard"
         android:layout_width="0dp"
@@ -103,7 +100,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Back Button -->
     <Button
         android:id="@+id/btnBack"
         android:layout_width="0dp"

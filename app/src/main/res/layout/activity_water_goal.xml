@@ -9,7 +9,6 @@
     android:padding="16dp"
     tools:context=".WaterGoalActivity">
 
-    <!-- Header -->
     <TextView
         android:id="@+id/headerTitle"
         android:layout_width="wrap_content"
@@ -23,7 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Goal Setting Section -->
     <androidx.cardview.widget.CardView
         android:id="@+id/goalCard"
         android:layout_width="0dp"
@@ -71,7 +69,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Progress Section -->
     <androidx.cardview.widget.CardView
         android:id="@+id/progressCard"
         android:layout_width="0dp"
@@ -127,7 +124,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Add Water Section -->
     <androidx.cardview.widget.CardView
         android:id="@+id/addWaterCard"
         android:layout_width="0dp"
@@ -154,7 +150,6 @@
                 android:textColor="#333"
                 android:layout_marginBottom="12dp" />
 
-            <!-- Custom Amount Input -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -182,7 +177,6 @@
                     app:cornerRadius="8dp" />
             </LinearLayout>
 
-            <!-- Quick Add Button -->
             <Button
                 android:id="@+id/btnAddCup"
                 android:layout_width="match_parent"
@@ -195,7 +189,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Back Button -->
     <Button
         android:id="@+id/btnBack"
         android:layout_width="0dp"

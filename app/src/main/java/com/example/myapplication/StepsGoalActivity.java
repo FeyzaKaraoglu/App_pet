@@ -44,8 +44,6 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
     String today;
 
     private static final int PERMISSION_REQUEST_ACTIVITY_RECOGNITION = 1001;
-
-    // ✅ MainActivity’den çağırabilmek için
     public static StepsGoalActivity instance;
 
     @Override
@@ -53,8 +51,7 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps_goal);
 
-        instance = this; // referans atama
-
+        instance = this;
         etStepGoal = findViewById(R.id.etStepGoal);
         btnSetStepGoal = findViewById(R.id.btnSetStepGoal);
         btnBack = findViewById(R.id.btnBack);
@@ -70,13 +67,11 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
         if (dailyStepGoal > 0) {
             etStepGoal.setText(String.valueOf(dailyStepGoal));
         }
-
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         if (sensorManager != null) {
             stepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
             stepDetector = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         }
-
         if (!today.equals(savedDate)) {
             resetDailyProgress();
         } else {
@@ -125,8 +120,6 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
 
         goalPrefs.edit().putBoolean("stepsCompleted", false).apply();
     }
-
-    // ✅ MainActivity’den çağrılacak
     public void forceResetFromMain() {
         resetDailyProgress();
         updateStepProgress();

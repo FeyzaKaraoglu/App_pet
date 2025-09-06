@@ -34,7 +34,6 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
     int totalSleptMinutes = 0;
     boolean isSleeping = false;
 
-    // Wake-up detection variables
     private boolean lightThresholdMet = false;
     private boolean movementThresholdMet = false;
     private long lastWakeCheckTime = 0;
@@ -45,7 +44,6 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
     Handler handler = new Handler();
     long startTime;
 
-    // ✅ MainActivity’den çağırabilmek için
     public static SleepGoalActivity instance;
 
     Runnable sleepRunnable = new Runnable() {
@@ -74,7 +72,7 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sleep_goal);
 
-        instance = this; // ✅ static instance atama
+        instance = this;
 
         etSleepGoal = findViewById(R.id.etSleepGoal);
         btnSaveGoal = findViewById(R.id.btnSaveGoal);
@@ -159,7 +157,6 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
 
         Toast.makeText(this, "Sleep session recorded: " + minutesElapsed + " minutes", Toast.LENGTH_SHORT).show();
 
-        // ✅ MainActivity’ye bildirme
         if (totalSleptMinutes / 60 >= goalHours && MainActivity.context != null) {
             MainActivity.context.markGoalCompleted("sleep");
         }
@@ -199,7 +196,6 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         }
     }
 
-    // ✅ MainActivity’den çağrılabilir reset fonksiyonu
     public void forceResetFromMain() {
         totalSleptMinutes = 0;
         prefs.edit().putInt("progress", 0).apply();
