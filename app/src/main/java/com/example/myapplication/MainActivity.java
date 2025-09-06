@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
         updateLifeIndicator(lvl2, stepsGoalCompleted, "👟");
         updateLifeIndicator(lvl3, sleepGoalCompleted, "😴");
         updateLifeIndicator(lvl4, focusGoalCompleted, "🎯");
-        updateGameButton();
     }
 
     private void updateLifeIndicator(TextView lifeView, boolean completed, String emoji) {
@@ -110,28 +109,6 @@ public class MainActivity extends AppCompatActivity {
             lifeView.setText("");
             lifeView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
         }
-    }
-
-    private void updateGameButton() {
-        int completedGoals = getCompletedGoalsCount();
-        if (completedGoals == 4) {
-            btnGame.setText("🎮 Play Mini-Game!");
-            btnGame.setBackgroundColor(ContextCompat.getColor(this, android.R.color.holo_green_light));
-            btnGame.setEnabled(true);
-        } else {
-            btnGame.setText("Complete " + (4 - completedGoals) + " more goals");
-            btnGame.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
-            btnGame.setEnabled(false);
-        }
-    }
-
-    private int getCompletedGoalsCount() {
-        int count = 0;
-        if (waterGoalCompleted) count++;
-        if (stepsGoalCompleted) count++;
-        if (sleepGoalCompleted) count++;
-        if (focusGoalCompleted) count++;
-        return count;
     }
 
     public void markGoalCompleted(String goalType) {
@@ -162,44 +139,21 @@ public class MainActivity extends AppCompatActivity {
 
         editor.apply();
         updateGoalChart();
-
-        if (getCompletedGoalsCount() == 4) {
-            showAllGoalsCompletedMessage();
-        }
     }
 
     private void showGoalCompletedMessage(String message) {
         Toast.makeText(this, message + " Your pet gained a life!", Toast.LENGTH_LONG).show();
     }
 
-    private void showAllGoalsCompletedMessage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("🎉 Congratulations!");
-        builder.setMessage("You've completed all your daily goals!\nYour pet is ready to play mini-games!");
-        builder.setPositiveButton("Awesome!", (dialog, which) -> dialog.dismiss());
-        builder.show();
-    }
-
     private void setupClickListeners() {
         btnSettings.setOnClickListener(v -> showAyarlarDialog());
         btnGoals.setOnClickListener(v -> showGoalsDialog());
-        btnGame.setOnClickListener(v -> {
-            if (getCompletedGoalsCount() == 4) {
-                startMiniGame();
-            } else {
-                Toast.makeText(this, "Complete all daily goals to unlock mini-games!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
-    private void startMiniGame() {
-        String[] games = {"Memory Game", "Pet Care Game", "Puzzle Game"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose a Mini-Game");
-        builder.setItems(games, (dialog, which) -> {
-            Toast.makeText(this, "Starting " + games[which] + "...", Toast.LENGTH_SHORT).show();
+        // 🎮 Oyun butonu: her zaman direkt MiniGameActivity açsın
+        btnGame.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MiniGameActivity.class);
+            startActivity(intent);
         });
-        builder.show();
     }
 
     private void showAyarlarDialog() {
