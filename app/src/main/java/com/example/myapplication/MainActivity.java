@@ -1,8 +1,10 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.app.AlertDialog;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,18 +18,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Ayarlar butonu
         btnSettings = findViewById(R.id.btnSettings);
+        btnSettings.setOnClickListener(v -> showAyarlarDialog());
 
-        btnSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAyarlarDialog();
-            }
+        // Bottom bar içindeki Mini Game butonu
+        LinearLayout bottomBar = findViewById(R.id.bottomBar);
+        Button btnGame = bottomBar.findViewById(R.id.btnGame);
+
+        btnGame.setOnClickListener(v -> {
+            // MiniGameActivity'yi aç
+            Intent intent = new Intent(MainActivity.this, MiniGameActivity.class);
+            startActivity(intent);
         });
     }
 
     private void showAyarlarDialog() {
-        // Ayarlar menüsü seçenekleri
         String[] options = {"Languages", "pet name", "color", "reset"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -36,19 +42,15 @@ public class MainActivity extends AppCompatActivity {
             switch (which) {
                 case 0:
                     // Dil değiştir
-                    // Buraya dil değiştirme kodunu yaz
                     break;
                 case 1:
                     // Pet ismi değiştir
-                    // Buraya pet ismi değiştirme kodunu yaz
                     break;
                 case 2:
                     // Renk değiştir
-                    // Buraya renk değiştirme kodunu yaz
                     break;
                 case 3:
                     // Sıfırla
-                    // Buraya sıfırlama kodunu yaz
                     break;
             }
         });
