@@ -120,6 +120,7 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
 
         goalPrefs.edit().putBoolean("stepsCompleted", false).apply();
     }
+
     public void forceResetFromMain() {
         resetDailyProgress();
         updateStepProgress();
@@ -209,11 +210,12 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
             goalCompleted = true;
             goalPrefs.edit().putBoolean("stepsCompleted", true).apply();
 
-            if (MainActivity.context != null) {
-                MainActivity.context.markGoalCompleted("steps");
-            }
+            // 🔥 Fuel ekle
+            SharedPreferences fuelPrefs = getSharedPreferences("fuelPrefs", MODE_PRIVATE);
+            int currentFuel = fuelPrefs.getInt("totalFuel", 0);
+            fuelPrefs.edit().putInt("totalFuel", currentFuel + 1).apply();
 
-            Toast.makeText(this, "🎉 Steps goal completed! Your pet gained a life!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "🎉 Steps goal completed! +1 Fuel ⛽", Toast.LENGTH_LONG).show();
         }
     }
 

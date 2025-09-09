@@ -86,7 +86,6 @@ public class WaterGoalActivity extends AppCompatActivity {
 
         dailyGoal = prefs.getInt("dailyGoal", 2000);
 
-        // Set default goal if none exists
         if (dailyGoal == 0) {
             dailyGoal = 2000;
             prefs.edit().putInt("dailyGoal", dailyGoal).apply();
@@ -136,6 +135,7 @@ public class WaterGoalActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid number!", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void addCustomWater() {
         String drinkText = etDrink.getText().toString().trim();
         if (drinkText.isEmpty()) {
@@ -157,6 +157,7 @@ public class WaterGoalActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a valid number!", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void addCupOfWater() {
         addWater(CUP_AMOUNT);
     }
@@ -166,19 +167,30 @@ public class WaterGoalActivity extends AppCompatActivity {
             Toast.makeText(this, "Daily water goal already completed! 🎉", Toast.LENGTH_SHORT).show();
             return;
         }
+
         totalDrank += amount;
-        updateProgress();
         prefs.edit().putInt("totalDrank", totalDrank).apply();
+        updateProgress();
+
         if (totalDrank >= dailyGoal && !goalCompleted) {
             goalCompleted = true;
-
             goalPrefs.edit().putBoolean("waterCompleted", true).apply();
 
-            Toast.makeText(this, "🎉 Water goal completed! Your pet gained a life!", Toast.LENGTH_LONG).show();
+            // 🔥 Fuel ekle (artık burada)
+            SharedPreferences fuelPrefs = getSharedPreferences("fuelPrefs", MODE_PRIVATE);
+            int currentFuel = fuelPrefs.getInt("totalFuel", 0);
+            fuelPrefs.edit().putInt("totalFuel", currentFuel + 1).apply();
+
+            Toast.makeText(this, "🎉 Water goal completed! +1 Fuel ⛽", Toast.LENGTH_LONG).show();
+            btnAddDrink.setText("Goal Completed! 🎉");
+            btnAddCup.setText("Goal Completed! 🎉");
+            btnAddDrink.setEnabled(false);
+            btnAddCup.setEnabled(false);
         } else {
             Toast.makeText(this, "Added " + amount + " ml. Keep going!", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void updateProgress() {
         tvProgress.setText("Progress: " + totalDrank + " / " + dailyGoal + " ml");
 
@@ -208,6 +220,7 @@ public class WaterGoalActivity extends AppCompatActivity {
             btnAddCup.setEnabled(true);
         }
     }
+
     private void goBackToMain() {
         Intent intent = new Intent(WaterGoalActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

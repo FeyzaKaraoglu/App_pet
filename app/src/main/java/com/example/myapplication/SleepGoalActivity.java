@@ -27,12 +27,14 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
     TextView tvSleepTimer, tvSleepProgress;
 
     SharedPreferences prefs;
+    SharedPreferences goalPrefs;
     SensorManager sensorManager;
     Sensor lightSensor, accelSensor;
 
     int goalHours = 0;
     int totalSleptMinutes = 0;
     boolean isSleeping = false;
+    boolean goalCompleted = false;
 
     private boolean lightThresholdMet = false;
     private boolean movementThresholdMet = false;
@@ -83,6 +85,7 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         tvSleepProgress = findViewById(R.id.tvSleepProgress);
 
         prefs = getSharedPreferences("SleepPrefs", MODE_PRIVATE);
+        goalPrefs = getSharedPreferences("goalCompletionPrefs", MODE_PRIVATE);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -107,6 +110,8 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
                     return;
                 }
                 prefs.edit().putInt("goal", goalHours).apply();
+                goalPrefs.edit().putBoolean("sleepCompleted", false).apply();
+                goalCompleted = false;
                 updateProgress();
                 Toast.makeText(this, "Sleep goal set: " + goalHours + "h", Toast.LENGTH_SHORT).show();
             } catch (NumberFormatException e) {
@@ -157,8 +162,16 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
 
         Toast.makeText(this, "Sleep session recorded: " + minutesElapsed + " minutes", Toast.LENGTH_SHORT).show();
 
-        if (totalSleptMinutes / 60 >= goalHours && MainActivity.context != null) {
-            MainActivity.context.markGoalCompleted("sleep");
+        // 🔥 Fuel ekleme burada
+        if (!goalCompleted && (totalSleptMinutes / 60 >= goalHours)) {
+            goalCompleted = true;
+            goalPrefs.edit().putBoolean("sleepCompleted", true).apply();
+
+            SharedPreferences fuelPrefs = getSharedPreferences("fuelPrefs", MODE_PRIVATE);
+            int currentFuel = fuelPrefs.getInt("totalFuel", 0);
+            fuelPrefs.edit().putInt("totalFuel", currentFuel + 1).apply();
+
+            Toast.makeText(this, "🎉 Sleep goal completed! +1 Fuel ⛽", Toast.LENGTH_LONG).show();
         }
 
         lightThresholdMet = false;
@@ -183,6 +196,7 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
     private void loadGoalAndProgress() {
         goalHours = prefs.getInt("goal", 0);
         totalSleptMinutes = prefs.getInt("progress", 0);
+        goalCompleted = goalPrefs.getBoolean("sleepCompleted", false);
         if (goalHours > 0) etSleepGoal.setText(String.valueOf(goalHours));
         updateProgress();
     }
@@ -192,13 +206,17 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         String today = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
         if (!today.equals(lastDate)) {
             prefs.edit().putInt("progress", 0).putString("lastDate", today).apply();
+            goalPrefs.edit().putBoolean("sleepCompleted", false).apply();
             totalSleptMinutes = 0;
+            goalCompleted = false;
         }
     }
 
     public void forceResetFromMain() {
         totalSleptMinutes = 0;
         prefs.edit().putInt("progress", 0).apply();
+        goalPrefs.edit().putBoolean("sleepCompleted", false).apply();
+        goalCompleted = false;
         updateProgress();
     }
 
@@ -233,7 +251,7 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
 
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0], y = event.values[1], z = event.values[2];
-            double magnitude = Math.sqrt(x*x + y*y + z*z);
+            double magnitude = Math.sqrt(x * x + y * y + z * z);
             double acceleration = Math.abs(magnitude - SensorManager.GRAVITY_EARTH);
             if (acceleration > MOVEMENT_WAKE_THRESHOLD) {
                 movementThresholdMet = true;

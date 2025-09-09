@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import android.app.AlertDialog;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -17,14 +20,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static MainActivity context;
 
-    Button btnSettings;
-    Button btnGoals;
-    Button btnGame;
+    Button btnSettings, btnGoals, btnGame;
+    TextView fuelCountText, lvl1, lvl2, lvl3, lvl4;
 
-    TextView lvl1, lvl2, lvl3, lvl4;
-    TextView petNameView;
-
-    SharedPreferences goalPrefs;
+    SharedPreferences goalPrefs, fuelPrefs;
 
     boolean waterGoalCompleted = false;
     boolean stepsGoalCompleted = false;
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setupPreferences();
         checkDailyReset();
         updateGoalChart();
+        updateFuelDisplay();
         setupClickListeners();
     }
 
@@ -49,24 +49,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateGoalChart();
+        updateFuelDisplay();
     }
 
     private void initializeViews() {
         btnSettings = findViewById(R.id.btnSettings);
         btnGoals = findViewById(R.id.btnGoals);
-        btnGame = findViewById(R.id.btnGame);
+        LinearLayout bottomBar = findViewById(R.id.bottomBar);
+        btnGame = bottomBar.findViewById(R.id.btnGame);
 
-        // Goal completion boxes (lives)
+        fuelCountText = findViewById(R.id.fuelCountText);
         lvl1 = findViewById(R.id.lvl1);
         lvl2 = findViewById(R.id.lvl2);
         lvl3 = findViewById(R.id.lvl3);
         lvl4 = findViewById(R.id.lvl4);
-
-        petNameView = findViewById(R.id.textView);
     }
 
     private void setupPreferences() {
         goalPrefs = getSharedPreferences("goalCompletionPrefs", MODE_PRIVATE);
+        fuelPrefs = getSharedPreferences("fuelPrefs", MODE_PRIVATE);
     }
 
     private void checkDailyReset() {
@@ -81,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("focusCompleted", false);
             editor.putString("lastGoalDate", today);
             editor.apply();
+
+            // Fuel de sıfırlansın
+            fuelPrefs.edit().putInt("totalFuel", 0).apply();
         }
 
         loadGoalCompletionStatus();
@@ -111,52 +115,132 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void updateFuelDisplay() {
+        int currentFuel = fuelPrefs.getInt("totalFuel", 0);
+        fuelCountText.setText(" " + currentFuel);
+    }
+
     public void markGoalCompleted(String goalType) {
-        SharedPreferences.Editor editor = goalPrefs.edit();
+        SharedPreferences.Editor goalEditor = goalPrefs.edit();
 
         switch (goalType.toLowerCase()) {
             case "water":
-                editor.putBoolean("waterCompleted", true);
-                waterGoalCompleted = true;
-                showGoalCompletedMessage("Water goal completed! 💧");
+                if (!waterGoalCompleted) {
+                    goalEditor.putBoolean("waterCompleted", true);
+                    waterGoalCompleted = true;
+                    showGoalCompletedMessage("Water goal completed! +1 Fuel ⛽");
+                }
                 break;
             case "steps":
-                editor.putBoolean("stepsCompleted", true);
-                stepsGoalCompleted = true;
-                showGoalCompletedMessage("Steps goal completed! 👟");
+                if (!stepsGoalCompleted) {
+                    goalEditor.putBoolean("stepsCompleted", true);
+                    stepsGoalCompleted = true;
+                    showGoalCompletedMessage("Steps goal completed! +1 Fuel ⛽");
+                }
                 break;
             case "sleep":
-                editor.putBoolean("sleepCompleted", true);
-                sleepGoalCompleted = true;
-                showGoalCompletedMessage("Sleep goal completed! 😴");
+                if (!sleepGoalCompleted) {
+                    goalEditor.putBoolean("sleepCompleted", true);
+                    sleepGoalCompleted = true;
+                    showGoalCompletedMessage("Sleep goal completed! +1 Fuel ⛽");
+                }
                 break;
             case "focus":
-                editor.putBoolean("focusCompleted", true);
-                focusGoalCompleted = true;
-                showGoalCompletedMessage("Focus goal completed! 🎯");
+                if (!focusGoalCompleted) {
+                    goalEditor.putBoolean("focusCompleted", true);
+                    focusGoalCompleted = true;
+                    showGoalCompletedMessage("Focus goal completed! +1 Fuel ⛽");
+                }
                 break;
         }
 
-        editor.apply();
+        goalEditor.apply();
         updateGoalChart();
+        updateFuelDisplay();
+    }
+
+    public static void consumeFuel(int amount) {
+        if (context != null) {
+            int currentFuel = context.fuelPrefs.getInt("totalFuel", 0);
+            int newFuel = Math.max(0, currentFuel - amount);
+            context.fuelPrefs.edit().putInt("totalFuel", newFuel).apply();
+            context.updateFuelDisplay();
+        }
     }
 
     private void showGoalCompletedMessage(String message) {
-        Toast.makeText(this, message + " Your pet gained a life!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private void setupClickListeners() {
-        btnSettings.setOnClickListener(v -> showAyarlarDialog());
+        btnSettings.setOnClickListener(v -> showSettingsDialog());
         btnGoals.setOnClickListener(v -> showGoalsDialog());
-
-        // 🎮 Oyun butonu: her zaman direkt MiniGameActivity açsın
         btnGame.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MiniGameActivity.class);
-            startActivity(intent);
+            int currentFuel = fuelPrefs.getInt("totalFuel", 0);
+            if (currentFuel > 0) {
+                consumeFuel(1);
+                startActivity(new Intent(MainActivity.this, MiniGameActivity.class));
+            } else {
+                boolean anyGoalCompleted = waterGoalCompleted || stepsGoalCompleted ||
+                        sleepGoalCompleted || focusGoalCompleted;
+
+                if (!anyGoalCompleted) {
+                    showNoFuelDialog();
+                } else {
+                    Toast.makeText(this,
+                            "Not enough fuel! Complete more daily goals to earn fuel ⛽",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
         });
     }
 
-    private void showAyarlarDialog() {
+    private void showNoFuelDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("No Fuel Available! ⛽");
+        builder.setMessage("You need to complete daily goals to earn fuel and play games!\n\n" +
+                "Available goals:\n" +
+                "💧 Water Goal - Drink your daily water\n" +
+                "👟 Steps Goal - Walk your daily steps\n" +
+                "😴 Sleep Goal - Get enough sleep\n" +
+                "🎯 Focus Goal - Focus on your tasks\n\n" +
+                "Each completed goal gives you 1 fuel!");
+
+        builder.setPositiveButton("View Goals", (dialog, which) -> {
+            showGoalsDialog();
+        });
+
+        builder.setNegativeButton("OK", (dialog, which) -> {
+            dialog.dismiss();
+        });
+
+        builder.show();
+    }
+
+    private void showGoalsDialog() {
+        String[] options = {"💧 Water Goal", "👟 Steps Goal", "😴 Sleeping Goal", "🎯 Focusing Goal"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Daily Goals - Earn Fuel!");
+        builder.setItems(options, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    startActivity(new Intent(this, WaterGoalActivity.class));
+                    break;
+                case 1:
+                    startActivity(new Intent(this, StepsGoalActivity.class));
+                    break;
+                case 2:
+                    startActivity(new Intent(this, SleepGoalActivity.class));
+                    break;
+                case 3:
+                    startActivity(new Intent(this, FocusGoalActivity.class));
+                    break;
+            }
+        });
+        builder.show();
+    }
+
+    private void showSettingsDialog() {
         String[] options = {"Languages", "Pet name", "Color", "Reset Progress"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Settings");
@@ -180,27 +264,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changePetName() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Change Pet Name");
-        final android.widget.EditText input = new android.widget.EditText(this);
-        input.setHint("Enter new name");
-        builder.setView(input);
-        builder.setPositiveButton("OK", (dialog, which) -> {
-            String newName = input.getText().toString().trim();
-            if (!newName.isEmpty()) {
-                petNameView.setText(newName);
-                goalPrefs.edit().putString("petName", newName).apply();
-                Toast.makeText(this, "Pet name changed to " + newName, Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
+        Toast.makeText(this, "Change Pet Name feature will be implemented later!", Toast.LENGTH_SHORT).show();
     }
 
     private void resetDailyProgress() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Reset Daily Progress");
-        builder.setMessage("This will reset all today's goal progress. Are you sure?");
+        builder.setMessage("This will reset all today's goal progress AND fuel. Are you sure?");
         builder.setPositiveButton("Yes", (dialog, which) -> {
             SharedPreferences.Editor editor = goalPrefs.edit();
             editor.putBoolean("waterCompleted", false);
@@ -209,47 +279,13 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("focusCompleted", false);
             editor.apply();
 
-            getSharedPreferences("waterPrefs", MODE_PRIVATE).edit().putInt("totalDrank", 0).apply();
-
-            if (StepsGoalActivity.instance != null) {
-                StepsGoalActivity.instance.forceResetFromMain();
-            }
-
-            if (SleepGoalActivity.instance != null) {
-                SleepGoalActivity.instance.forceResetFromMain();
-            }
-
-            if (FocusGoalActivity.instance != null) {
-                FocusGoalActivity.instance.forceResetFromMain();
-            }
-
+            fuelPrefs.edit().putInt("totalFuel", 0).apply();
             updateGoalChart();
-            Toast.makeText(this, "Daily progress reset!", Toast.LENGTH_SHORT).show();
+            updateFuelDisplay();
+
+            Toast.makeText(this, "Daily progress and fuel reset!", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
-    }
-
-    private void showGoalsDialog() {
-        String[] options = {"💧 Water Goal", "👟 Steps Goal", "😴 Sleeping Goal", "🎯 Focusing Goal"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Daily Goals");
-        builder.setItems(options, (dialog, which) -> {
-            switch (which) {
-                case 0:
-                    startActivity(new Intent(this, WaterGoalActivity.class));
-                    break;
-                case 1:
-                    startActivity(new Intent(this, StepsGoalActivity.class));
-                    break;
-                case 2:
-                    startActivity(new Intent(this, SleepGoalActivity.class));
-                    break;
-                case 3:
-                    startActivity(new Intent(this, FocusGoalActivity.class));
-                    break;
-            }
-        });
         builder.show();
     }
 }
