@@ -115,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateFuelDisplay() {
+    public void updateFuelDisplay() {
         int currentFuel = fuelPrefs.getInt("totalFuel", 0);
-        fuelCountText.setText(" " + currentFuel);
+        fuelCountText.setText("⛽ " + currentFuel);
     }
 
     public void markGoalCompleted(String goalType) {
