@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         updateGoalChart();
         updateFuelDisplay();
         setupClickListeners();
+        updatePetColor();
     }
 
     @Override
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         updateGoalChart();
         updatePetName();
         updateFuelDisplay();
+        updatePetColor();
     }
 
     private void initializeViews() {
@@ -86,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
             editor.putString("lastGoalDate", today);
             editor.apply();
 
-            // Fuel de sıfırlansın
             fuelPrefs.edit().putInt("totalFuel", 0).apply();
         }
 
@@ -259,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                     changePetName();
                     break;
                 case 2:
-                    Toast.makeText(this, "Color settings coming soon!", Toast.LENGTH_SHORT).show();
+                    changePetColor();
                     break;
                 case 3:
                     resetDailyProgress();
@@ -268,6 +270,35 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
     }
+    private void changePetColor() {
+        String[] colors = {"Purple", "Yellow", "Green"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Pet Color");
+        builder.setItems(colors, (dialog, which) -> {
+            String selectedColor = colors[which];
+            goalPrefs.edit().putString("petColor", selectedColor).apply(); // seçimi kaydet
+            updatePetColor(); // ekranda değiştir
+        });
+        builder.show();
+    }
+    private void updatePetColor() {
+        String color = goalPrefs.getString("petColor", "Green"); // varsayılan Red
+        ImageView petImage = findViewById(R.id.petImage);
+
+        switch (color) {
+            case "Purple":
+                petImage.setImageResource(R.drawable.pet_purple);
+                break;
+            case "Yellow":
+                petImage.setImageResource(R.drawable.pet_yellow);
+                break;
+            default:
+                petImage.setImageResource(R.drawable.pet_green);
+                break;
+        }
+    }
+
     private void changePetName() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.change_pet_name));

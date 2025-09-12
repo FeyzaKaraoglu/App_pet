@@ -11,12 +11,12 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+       // setContentView(R.layout.activity_main2);
 
-        btnLang = findViewById(R.id.btnLang);
-        btnName = findViewById(R.id.btnPetName);
-        btnColor = findViewById(R.id.btnColor);
-        btnReset = findViewById(R.id.btnReset);
+       // btnLang = findViewById(R.id.btnLang);
+        //btnName = findViewById(R.id.btnPetName);
+        //btnColor = findViewById(R.id.btnColor);
+       // btnReset = findViewById(R.id.btnReset);
 
         btnLang.setOnClickListener(v -> {
             // Dil değiştirme kodu
