@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity context;
 
     Button btnSettings, btnGoals, btnGame;
-    TextView fuelCountText, lvl1, lvl2, lvl3, lvl4;
+    TextView fuelCountText, lvl1, lvl2, lvl3, lvl4,petNameView;
 
     SharedPreferences goalPrefs, fuelPrefs;
 
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateGoalChart();
+        updatePetName();
         updateFuelDisplay();
     }
 
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         lvl2 = findViewById(R.id.lvl2);
         lvl3 = findViewById(R.id.lvl3);
         lvl4 = findViewById(R.id.lvl4);
+
+        petNameView = findViewById(R.id.textView);
     }
 
     private void setupPreferences() {
@@ -103,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
         updateLifeIndicator(lvl2, stepsGoalCompleted, "👟");
         updateLifeIndicator(lvl3, sleepGoalCompleted, "😴");
         updateLifeIndicator(lvl4, focusGoalCompleted, "🎯");
+
+        updatePetName();
     }
 
     private void updateLifeIndicator(TextView lifeView, boolean completed, String emoji) {
@@ -118,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
     public void updateFuelDisplay() {
         int currentFuel = fuelPrefs.getInt("totalFuel", 0);
         fuelCountText.setText("⛽ " + currentFuel);
+        updatePetName();
     }
 
     public void markGoalCompleted(String goalType) {
@@ -262,11 +268,33 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
     }
-
     private void changePetName() {
-        Toast.makeText(this, "Change Pet Name feature will be implemented later!", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.change_pet_name));
+        final android.widget.EditText input = new android.widget.EditText(this);
+        input.setHint(getString(R.string.enter_new_name));
+        builder.setView(input);
+        builder.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
+            String newName = input.getText().toString().trim();
+            if (!newName.isEmpty()) {
+                petNameView.setText(newName);
+                goalPrefs.edit().putString("petName", newName).apply();
+                Toast.makeText(this, getString(R.string.pet_name_changed, newName), Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.cancel());
+        builder.show();
     }
-
+    private void updatePetName() {
+        try {
+            String savedPetName = goalPrefs.getString("petName", "MyPet");
+            if (petNameView != null) {
+                petNameView.setText(savedPetName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void resetDailyProgress() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Reset Daily Progress");

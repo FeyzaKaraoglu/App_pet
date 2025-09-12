@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="change_pet_name">Change Pet Name</string>
+    <string name="enter_new_name">Enter new name</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="pet_name_changed">Pet name changed to %1$s</string>
 </resources>
