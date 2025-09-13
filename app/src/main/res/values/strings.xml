@@ -1,14 +1,183 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">MyApp</string>
+
+    <!-- General Goals -->
+    <string name="goal_saved">Goal saved: %1$d minutes</string>
+    <string name="enter_positive_number">Enter a positive number</string>
+    <string name="enter_your_goal">Enter your goal</string>
+    <string name="set_goal_first">Set a goal first</string>
+    <string name="focused_minutes">%1$d minutes focused</string>
+    <string name="elapsed">Elapsed time: %1$02d:%2$02d</string>
+    <string name="progress">Progress: %1$d / %2$d minutes</string>
+    <string name="goal_achieved">✓ GOAL ACHIEVED! 🎉</string>
+    <string name="stop_focus_first">Stop focus mode first</string>
+
+    <!-- Score and Level -->
+    <string name="score_text">Score: %1$d</string>
+    <string name="level_text">Level: %1$d</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="languages">Languages</string>
+    <string name="pet_name">Pet Name</string>
+    <string name="color">Color</string>
+    <string name="reset_progress">Reset Progress</string>
     <string name="change_pet_name">Change Pet Name</string>
-    <string name="enter_new_name">Enter new name</string>
+    <string name="enter_new_name">Enter New Name</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="reset_daily_progress">Reset Daily Progress</string>
+    <string name="reset_progress_message">This will reset all today\'s goal progress. Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="settings_language">Language Settings</string>
+    <string name="settings_pet_name">Pet Name Settings</string>
+    <string name="settings_color">Color Settings</string>
+    <string name="settings_reset">Reset Progress</string>
+
+    <!-- Daily Goals -->
+    <string name="daily_goals">🎯 Daily Goals</string>
+    <string name="water_goal">💧 Water Goal</string>
+    <string name="steps_goal">🚶 Steps Goal</string>
+    <string name="sleep_goal">😴 Sleep Goal</string>
+    <string name="focus_goal">🧐 Focus Goal</string>
+    <string name="language_coming_soon">Language settings coming soon!</string>
+    <string name="color_coming_soon">Color settings coming soon!</string>
     <string name="pet_name_changed">Pet name changed to %1$s</string>
-    <string-array name="pet_colors">
-        <item>Green</item>
-        <item>Purple</item>
-        <item>Yellow</item>
-    </string-array>
+    <string name="daily_progress_reset">Daily progress reset!</string>
+
+    <!-- Game -->
+    <string name="score_label">Score: %1$d</string>
+    <string name="game_over">GAME OVER</string>
+    <string name="restart_game">Restart Game</string>
+    <string name="your_score">Your Score: %1$d</string>
+    <string name="high_score">High Score: %1$d</string>
+    <string name="retry">Retry</string>
+    <string name="main_menu">Main Menu</string>
+
+    <!-- Sleep Goal -->
+    <string name="sleep_goal_title">Sleep Goal</string>
+    <string name="set_sleep_goal">Set Sleep Goal</string>
+    <string name="enter_sleep_goal">Please enter a sleep goal!</string>
+    <string name="set_sleep_goal_first">Set a sleep goal first</string>
+    <string name="sleep_goal_set">Sleep goal set: %1$d hours</string>
+    <string name="start_sleep_mode">Start sleep mode</string>
+    <string name="stop_sleep_mode">Stop sleep mode</string>
+    <string name="sleep_mode_started">Sleep mode started! Place your phone face down in a dark room</string>
+    <string name="sleep_session_recorded">Sleep recorded: %1$d minutes</string>
+    <string name="sleep_goal_completed">🎉 Sleep goal achieved! +1 Fuel </string>
+    <string name="elapsed_format">Elapsed time: %1$d hours %2$d minutes</string>
+    <string name="progress_format">Progress: %1$d hours %2$d minutes / %3$d hours</string>
+    <string name="goal_achieved_suffix"> ✓ GOAL ACHIEVED!</string>
+    <string name="stop_sleep_first">Stop sleep mode first</string>
+    <string name="wake_detected">Wake detected: Light + Movement</string>
+    <string name="daily_sleep_goal_label">Daily Sleep Goal (hours)</string>
+    <string name="daily_sleep_goal_hint">Enter daily sleep goal (e.g., 8)</string>
+    <string name="save_sleep_goal">Save sleep goal</string>
+    <string name="sleep_timer_label">Sleep Timer</string>
+    <string name="sleep_timer">Elapsed time: %1$d hours %2$d minutes</string>
+    <string name="sleep_enter_positive">Please enter a positive number!</string>
+    <string name="sleep_enter_valid_number">Please enter a valid number!</string>
+    <string name="sleep_progress">Progress: %1$d hours %2$d minutes / %3$d hours</string>
+    <string name="sleep_goal_achieved">✓ GOAL ACHIEVED!</string>
+    <string name="sleep_wakeup_detected">Wake detected: Light + Movement</string>
+
+    <!-- Steps Goal -->
+    <string name="steps_enter_goal">Enter your daily steps goal!</string>
+    <string name="steps_enter_positive">Enter a positive number!</string>
+    <string name="steps_enter_valid_number">Enter a valid number!</string>
+    <string name="steps_goal_set">Steps goal set: %1$d</string>
+    <string name="steps_permission_denied">Permission denied, steps will not be counted!</string>
+    <string name="steps_sensor_not_available">Step sensors not available!</string>
+    <string name="steps_goal_completed">Steps goal achieved! Your pet gained one life!</string>
+    <string name="steps_progress">Steps: %1$d / %2$d</string>
+    <string name="steps_goal_achieved">GOAL ACHIEVED!</string>
+
+    <!-- Water Goal -->
+    <string name="water_goal_title">💧 Water Goal</string>
+    <string name="daily_goal_ml">Daily Goal (ml)</string>
+    <string name="enter_daily_water_goal">Enter daily water goal (e.g., 2000)</string>
+    <string name="set_daily_goal">Set Daily Goal</string>
+    <string name="todays_progress">Today\'s Progress</string>
+    <string name="progress_text">Progress: %1$d / %2$d ml</string>
+    <string name="goal_not_started">💧 Set a goal to start!</string>
+    <string name="add_water_intake">Add Water Intake</string>
+    <string name="custom_amount_hint">Custom amount (ml)</string>
+    <string name="add_water">Add Water</string>
+    <string name="add_cup">🫖 Add Cup (200ml)</string>
+    <string name="back_to_main">← Back to Main Menu</string>
+    <string name="enter_daily_goal">Please enter daily goal!</string>
+    <string name="goal_must_be_positive">Goal must be greater than 0!</string>
+    <string name="daily_goal_set">Daily goal set: %1$d ml</string>
+    <string name="enter_valid_number">Please enter a valid number!</string>
+    <string name="enter_water_amount">Please enter water amount!</string>
+    <string name="amount_must_be_positive">Amount must be greater than 0!</string>
+    <string name="daily_goal_completed">Daily water goal already achieved! </string>
+    <string name="water_goal_completed">Water goal achieved! +1 Fuel</string>
+    <string name="goal_completed">Goal achieved!</string>
+    <string name="added_amount_keep_going">%1$d ml added. Keep going!</string>
+    <string name="progress_status">Progress: %1$d / %2$d ml</string>
+    <string name="remaining_ml">%1$d ml remaining</string>
+
+    <!-- Buttons -->
+    <string name="btn_play_game">Play Game</string>
+    <string name="btn_goals">Goals</string>
+    <string name="btn_settings">Settings</string>
+    <string name="btn_game">Game</string>
+    <string name="daily_goals_progress">Daily Goals Progress</string>
+
+    <!-- Main Activity Goal Names -->
+    <string name="goal_water">💧 Water Goal</string>
+    <string name="goal_steps">🚶 Steps Goal</string>
+    <string name="goal_sleep">😴 Sleep Goal</string>
+    <string name="goal_focus">🧐 Focus Goal</string>
+
+    <!-- Menu -->
+    <string name="tv_daily_goals_progress">Daily Goals Progress</string>
+    <string name="tv_water">💧 Water</string>
+    <string name="tv_steps">🚶 Steps</string>
+    <string name="tv_sleep">😴 Sleep</string>
+    <string name="tv_focus">🧐 Focus</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_color_title">Choose Pet Color</string>
+    <string name="dialog_color_purple">Purple</string>
+    <string name="dialog_color_yellow">Yellow</string>
+    <string name="dialog_color_green">Green</string>
+    <string name="dialog_color_success">Pet color changed to %1$s</string>
+
+    <!-- Misc -->
+    <string name="default_pet_name">MyPet</string>
+    <string name="view_goals">View Goals</string>
+    <string name="no_fuel_message">You must complete daily goals to play games and earn fuel!</string>
+    <string name="no_fuel_title">No Fuel!</string>
+    <string name="progress_reset_success">Daily progress reset!</string>
+    <string name="reset_progress_title">Reset Daily Progress</string>
+    <string name="pet_color_changed">Pet color changed to %1$s</string>
+    <string name="choose_pet_color">Choose Pet Color</string>
+    <string name="pet_name_hint">Enter pet name</string>
+    <string name="not_enough_fuel_message">Not enough fuel! Complete more daily goals to earn fuel.</string>
+
+    <!-- Focus Goal -->
+    <string name="focus_goal_header">🎯 Focus Goal</string>
+    <string name="daily_focus_goal">Daily Focus Goal (minutes)</string>
+    <string name="focus_goal_hint">Enter minutes (e.g., 30)</string>
+    <string name="save_focus_goal">Save Focus Goal</string>
+    <string name="focus_timer_default">Elapsed time: 0 minutes 0 seconds</string>
+    <string name="focus_progress_default">Progress: 0 / 0 min</string>
+    <string name="start_focus_mode">Start Focus Mode</string>
+    <string name="stop_focus_mode">Stop Focus Mode</string>
+    <string name="enter_goal">Enter goal</string>
+    <string name="elapsed_time">Elapsed time: %1$02d:%2$02d</string>
+    <string name="focus_goal_completed">🎉 Focus goal achieved! +1 Fuel ⛽</string>
+    <string name="progress_goal_achieved">✓ Goal achieved!</string>
+
+    <!-- Game End -->
+    <string name="your_score_placeholder">🏆 Your Score: %1$d</string>
+    <string name="high_score_placeholder">👑 High Score: %1$d</string>
+    <string name="play_again">🎮 PLAY AGAIN</string>
+    <string name="go_to_main_menu">🏠 BACK TO MAIN MENU</string>
+    <string name="elapsed_format_0h_0m">Elapsed time: 0 hours 0 minutes</string>
+    <string name="progress_format_0h_0m">Progress: 0 hours 0 minutes / 0 hours</string>
 
 </resources>

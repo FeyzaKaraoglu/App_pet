@@ -1,0 +1,183 @@
+<resources>
+    <string name="app_name">MyApp</string>
+
+    <!-- Genel Hedefler -->
+    <string name="goal_saved">Hedef kaydedildi: %1$d dakika</string>
+    <string name="enter_positive_number">Pozitif sayı giriniz</string>
+    <string name="enter_your_goal">Hedefinizi girin</string>
+    <string name="set_goal_first">Önce bir hedef belirleyin</string>
+    <string name="focused_minutes">%1$d dakika odaklanıldı</string>
+    <string name="elapsed">Geçen süre: %1$02d:%2$02d</string>
+    <string name="progress">İlerleme: %1$d / %2$d dakika</string>
+    <string name="goal_achieved">✓ HEDEF TAMAMLANDI! 🎉</string>
+    <string name="stop_focus_first">Önce odak modunu durdurun</string>
+
+    <!-- Puan ve Seviye -->
+    <string name="score_text">Puan: %1$d</string>
+    <string name="level_text">Seviye: %1$d</string>
+
+    <!-- Ayarlar -->
+    <string name="settings">Ayarlar</string>
+    <string name="languages">Diller</string>
+    <string name="pet_name">Evcil Hayvan İsmi</string>
+    <string name="color">Renk</string>
+    <string name="reset_progress">İlerlemeni sıfırla</string>
+    <string name="change_pet_name">Evcil hayvan ismini değiştir</string>
+    <string name="enter_new_name">Yeni isim girin</string>
+    <string name="ok">Tamam</string>
+    <string name="cancel">İptal</string>
+    <string name="reset_daily_progress">Günlük ilerlemeyi sıfırla</string>
+    <string name="reset_progress_message">Bu, bugünkü tüm hedef ilerlemesini sıfırlayacak. Emin misiniz?</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="settings_language">Dil Ayarları</string>
+    <string name="settings_pet_name">Evcil Hayvan İsmi Ayarları</string>
+    <string name="settings_color">Renk Ayarları</string>
+    <string name="settings_reset">İlerlemeni sıfırla</string>
+
+    <!-- Günlük Hedefler -->
+    <string name="daily_goals">🎯 Günlük Hedefler</string>
+    <string name="water_goal">💧 Su Hedefi</string>
+    <string name="steps_goal">🚶 Adım Hedefi</string>
+    <string name="sleep_goal">😴 Uyku Hedefi</string>
+    <string name="focus_goal">🧐 Odak Hedefi</string>
+    <string name="language_coming_soon">Dil ayarları yakında gelecek!</string>
+    <string name="color_coming_soon">Renk ayarları yakında gelecek!</string>
+    <string name="pet_name_changed">Evcil hayvan ismi değiştirildi: %1$s</string>
+    <string name="daily_progress_reset">Günlük ilerleme sıfırlandı!</string>
+
+    <!-- Oyun -->
+    <string name="score_label">Puan: %1$d</string>
+    <string name="game_over">OYUN BİTTİ</string>
+    <string name="restart_game">Oyunu yeniden başlat</string>
+    <string name="your_score">Puanınız: %1$d</string>
+    <string name="high_score">En yüksek puan: %1$d</string>
+    <string name="retry">Tekrar dene</string>
+    <string name="main_menu">Ana Menü</string>
+
+    <!-- Uyku Hedefi -->
+    <string name="sleep_goal_title">Uyku Hedefi</string>
+    <string name="set_sleep_goal">Uyku hedefi belirle</string>
+    <string name="enter_sleep_goal">Lütfen uyku hedefi girin!</string>
+    <string name="set_sleep_goal_first">Önce uyku hedefi belirleyin</string>
+    <string name="sleep_goal_set">Uyku hedefi ayarlandı: %1$d saat</string>
+    <string name="start_sleep_mode">Uyku modunu başlat</string>
+    <string name="stop_sleep_mode">Uyku modunu durdur</string>
+    <string name="sleep_mode_started">Uyku modu başladı! Telefonu ekran aşağı koyun ve karanlık bir odada bulundurun</string>
+    <string name="sleep_session_recorded">Uyku kaydedildi: %1$d dakika</string>
+    <string name="sleep_goal_completed">🎉 Uyku hedefi tamamlandı! +1 yakıt </string>
+    <string name="elapsed_format">Geçen süre: %1$d saat %2$d dakika</string>
+    <string name="progress_format">İlerleme: %1$d saat %2$d dakika / %3$d saat</string>
+    <string name="goal_achieved_suffix"> ✓ HEDEF TAMAMLANDI!</string>
+    <string name="stop_sleep_first">Önce uyku modunu durdurun</string>
+    <string name="wake_detected">Uyanma tespit edildi: Işık + Hareket</string>
+    <string name="daily_sleep_goal_label">Günlük Uyku Hedefi (saat)</string>
+    <string name="daily_sleep_goal_hint">Günlük uyku hedefi girin (örn. 8)</string>
+    <string name="save_sleep_goal">Uyku hedefini kaydet</string>
+    <string name="sleep_timer_label">Uyku Zamanlayıcı</string>
+    <string name="sleep_timer">Geçen süre: %1$d saat %2$d dakika</string>
+    <string name="sleep_enter_positive">Lütfen pozitif bir sayı girin!</string>
+    <string name="sleep_enter_valid_number">Lütfen geçerli bir sayı girin!</string>
+    <string name="sleep_progress">İlerleme: %1$d saat %2$d dakika / %3$d saat</string>
+    <string name="sleep_goal_achieved">✓ HEDEF TAMAMLANDI!</string>
+    <string name="sleep_wakeup_detected">Uyanma tespit edildi: Işık + Hareket</string>
+
+    <!-- Adım Hedefi -->
+    <string name="steps_enter_goal">Günlük adım hedefinizi girin!</string>
+    <string name="steps_enter_positive">Pozitif sayı girin!</string>
+    <string name="steps_enter_valid_number">Geçerli bir sayı girin!</string>
+    <string name="steps_goal_set">Adım hedefi ayarlandı: %1$d</string>
+    <string name="steps_permission_denied">İzin reddedildi, adımlar sayılmayacak!</string>
+    <string name="steps_sensor_not_available">Adım sensörleri mevcut değil!</string>
+    <string name="steps_goal_completed">Adım hedefi tamamlandı! Evcil hayvan bir can kazandı!</string>
+    <string name="steps_progress">Adımlar: %1$d / %2$d</string>
+    <string name="steps_goal_achieved">HEDEF TAMAMLANDI!</string>
+
+    <!-- Su Hedefi -->
+    <string name="water_goal_title">💧 Su Hedefi</string>
+    <string name="daily_goal_ml">Günlük Hedef (ml)</string>
+    <string name="enter_daily_water_goal">Günlük su hedefinizi girin (örn. 2000)</string>
+    <string name="set_daily_goal">Günlük hedefi belirle</string>
+    <string name="todays_progress">Bugünkü ilerleme</string>
+    <string name="progress_text">İlerleme: %1$d / %2$d ml</string>
+    <string name="goal_not_started">💧 Başlamak için hedef belirleyin!</string>
+    <string name="add_water_intake">Su alımı ekle</string>
+    <string name="custom_amount_hint">Özel miktar (ml)</string>
+    <string name="add_water">Su ekle</string>
+    <string name="add_cup">🫖 Bardak ekle (200ml)</string>
+    <string name="back_to_main">← Ana Menüye dön</string>
+    <string name="enter_daily_goal">Lütfen günlük hedef girin!</string>
+    <string name="goal_must_be_positive">Hedef 0’dan büyük olmalı!</string>
+    <string name="daily_goal_set">Günlük hedef ayarlandı: %1$d ml</string>
+    <string name="enter_valid_number">Geçerli bir sayı girin!</string>
+    <string name="enter_water_amount">Lütfen su miktarını girin!</string>
+    <string name="amount_must_be_positive">Miktar 0’dan büyük olmalı!</string>
+    <string name="daily_goal_completed">Günlük su hedefi tamamlandı! </string>
+    <string name="water_goal_completed">Su hedefi tamamlandı! +1 yakıt</string>
+    <string name="goal_completed">Hedef tamamlandı!</string>
+    <string name="added_amount_keep_going">%1$d ml eklendi. Devam edin!</string>
+    <string name="progress_status">İlerleme: %1$d / %2$d ml</string>
+    <string name="remaining_ml">%1$d ml kaldı</string>
+
+    <!-- Butonlar -->
+    <string name="btn_play_game">Oyun oyna</string>
+    <string name="btn_goals">Hedefler</string>
+    <string name="btn_settings">Ayarlar</string>
+    <string name="btn_game">Oyun</string>
+    <string name="daily_goals_progress">Günlük Hedef İlerlemesi</string>
+
+    <!-- Ana Aktivite Hedef İsimleri -->
+    <string name="goal_water">💧 Su Hedefi</string>
+    <string name="goal_steps">🚶 Adım Hedefi</string>
+    <string name="goal_sleep">😴 Uyku Hedefi</string>
+    <string name="goal_focus">🧐 Odak Hedefi</string>
+
+    <!-- Menü -->
+    <string name="tv_daily_goals_progress">Günlük Hedef İlerlemesi</string>
+    <string name="tv_water">💧 Su</string>
+    <string name="tv_steps">🚶 Adımlar</string>
+    <string name="tv_sleep">😴 Uyku</string>
+    <string name="tv_focus">🧐 Odak</string>
+
+    <!-- Dialoglar -->
+    <string name="dialog_color_title">Evcil Hayvan Rengi Seç</string>
+    <string name="dialog_color_purple">Mor</string>
+    <string name="dialog_color_yellow">Sarı</string>
+    <string name="dialog_color_green">Yeşil</string>
+    <string name="dialog_color_success">Evcil hayvan rengi değiştirildi: %1$s</string>
+
+    <!-- Diğer -->
+    <string name="default_pet_name">EvcilHayvanım</string>
+    <string name="view_goals">Hedefleri görüntüle</string>
+    <string name="no_fuel_message">Oyun oynayıp yakıt kazanmak için günlük hedefleri tamamlamalısınız!</string>
+    <string name="no_fuel_title">Yakıt Yok!</string>
+    <string name="progress_reset_success">Günlük ilerleme sıfırlandı!</string>
+    <string name="reset_progress_title">Günlük ilerlemeyi sıfırla</string>
+    <string name="pet_color_changed">Evcil hayvan rengi değiştirildi: %1$s</string>
+    <string name="choose_pet_color">Evcil Hayvan Rengi Seç</string>
+    <string name="pet_name_hint">Evcil hayvan ismi girin</string>
+    <string name="not_enough_fuel_message">Yeterli yakıt yok! Yakıt kazanmak için daha fazla günlük hedef tamamlayın.</string>
+
+    <!-- Odak Hedefi -->
+    <string name="focus_goal_header">🎯 Odak Hedefi</string>
+    <string name="daily_focus_goal">Günlük Odak Hedefi (dakika)</string>
+    <string name="focus_goal_hint">Dakika girin (örn. 30)</string>
+    <string name="save_focus_goal">Odak hedefini kaydet</string>
+    <string name="focus_timer_default">Geçen süre: 0 dakika 0 saniye</string>
+    <string name="focus_progress_default">İlerleme: 0 / 0 dk</string>
+    <string name="start_focus_mode">Odak modunu başlat</string>
+    <string name="stop_focus_mode">Odak modunu durdur</string>
+    <string name="enter_goal">Hedef girin</string>
+    <string name="elapsed_time">Geçen süre: %1$02d:%2$02d</string>
+    <string name="focus_goal_completed">🎉 Odak hedefi tamamlandı! +1 yakıt </string>
+    <string name="progress_goal_achieved">✓ Hedef tamamlandı!</string>
+
+    <!-- Oyun Sonu -->
+    <string name="your_score_placeholder">🏆 Puanınız: %1$d</string>
+    <string name="high_score_placeholder">👑 En yüksek puan: %1$d</string>
+    <string name="play_again">🎮 TEKRAR OYNA</string>
+    <string name="go_to_main_menu">🏠 ANA MENÜYE DÖN</string>
+    <string name="elapsed_format_0h_0m">Geçen süre: 0 saat 0 dakika</string>
+    <string name="progress_format_0h_0m">İlerleme: 0 saat 0 dakika / 0 saat</string>
+
+</resources>

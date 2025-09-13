@@ -13,7 +13,7 @@
         android:id="@+id/headerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="😴 Sleep Goal"
+        android:text="@string/sleep_goal_title"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#388E3C"
@@ -21,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/goalCard"
         android:layout_width="0dp"
@@ -41,7 +42,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Daily Sleep Goal (hours)"
+                android:text="@string/daily_sleep_goal_label"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#333"
@@ -51,7 +52,7 @@
                 android:id="@+id/etSleepGoal"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Enter daily sleep goal (e.g., 8)"
+                android:hint="@string/daily_sleep_goal_hint"
                 android:inputType="number"
                 android:background="@drawable/edittext_background"
                 android:padding="12dp"
@@ -61,7 +62,7 @@
                 android:id="@+id/btnSaveGoal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Save Sleep Goal"
+                android:text="@string/save_sleep_goal"
                 android:backgroundTint="#4CAF50"
                 android:textColor="@android:color/white"
                 app:cornerRadius="8dp"/>
@@ -88,7 +89,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sleep Timer"
+                android:text="@string/sleep_timer_label"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#333"
@@ -98,7 +99,7 @@
                 android:id="@+id/tvSleepTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Elapsed: 0h 0m"
+                android:text="@string/elapsed_format_0h_0m"
                 android:textSize="16sp"
                 android:textColor="#666"
                 android:layout_marginBottom="8dp"/>
@@ -107,11 +108,12 @@
                 android:id="@+id/tvSleepProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Progress: 0h 0m / 8h"
+                android:text="@string/progress_format_0h_0m"
                 android:textSize="16sp"
                 android:textColor="#666"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/controlCard"
         android:layout_width="0dp"
@@ -133,7 +135,7 @@
                 android:id="@+id/btnStartSleep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Start Sleep Mode"
+                android:text="@string/start_sleep_mode"
                 android:backgroundTint="#388E3C"
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="8dp"
@@ -143,18 +145,19 @@
                 android:id="@+id/btnStopSleep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Stop Sleep Mode"
+                android:text="@string/stop_sleep_mode"
                 android:backgroundTint="#F44336"
                 android:textColor="@android:color/white"
                 app:cornerRadius="8dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <Button
         android:id="@+id/btnBack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="← Back to Main"
+        android:text="@string/back_to_main"
         android:backgroundTint="#757575"
         android:textColor="@android:color/white"
         android:textSize="16sp"
@@ -162,4 +165,5 @@
         app:layout_constraintTop_toBottomOf="@id/controlCard"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

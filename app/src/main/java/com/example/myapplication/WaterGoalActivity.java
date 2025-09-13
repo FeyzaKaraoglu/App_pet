@@ -1,7 +1,7 @@
 package com.example.myapplication;
 
-import android.content.SharedPreferences;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -85,7 +85,6 @@ public class WaterGoalActivity extends AppCompatActivity {
         }
 
         dailyGoal = prefs.getInt("dailyGoal", 2000);
-
         if (dailyGoal == 0) {
             dailyGoal = 2000;
             prefs.edit().putInt("dailyGoal", dailyGoal).apply();
@@ -104,14 +103,14 @@ public class WaterGoalActivity extends AppCompatActivity {
     private void setDailyGoal() {
         String goalText = etGoal.getText().toString().trim();
         if (goalText.isEmpty()) {
-            Toast.makeText(this, "Please enter a daily goal!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.goal_water) + " " + getString(R.string.not_enough_fuel_message), Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
             int newGoal = Integer.parseInt(goalText);
             if (newGoal <= 0) {
-                Toast.makeText(this, "Goal must be greater than 0!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.goal_water) + " " + getString(R.string.not_enough_fuel_message), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -127,26 +126,25 @@ public class WaterGoalActivity extends AppCompatActivity {
             editor.apply();
 
             goalPrefs.edit().putBoolean("waterCompleted", false).apply();
-
             updateProgress();
-            Toast.makeText(this, "Daily goal set: " + dailyGoal + " ml", Toast.LENGTH_SHORT).show();
 
+            Toast.makeText(this, getString(R.string.water_goal_completed), Toast.LENGTH_SHORT).show();
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Please enter a valid number!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.not_enough_fuel_message), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void addCustomWater() {
         String drinkText = etDrink.getText().toString().trim();
         if (drinkText.isEmpty()) {
-            Toast.makeText(this, "Please enter the amount of water!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.goal_water), Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
             int amount = Integer.parseInt(drinkText);
             if (amount <= 0) {
-                Toast.makeText(this, "Amount must be greater than 0!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.goal_water), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -154,7 +152,7 @@ public class WaterGoalActivity extends AppCompatActivity {
             etDrink.setText("");
 
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Please enter a valid number!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.not_enough_fuel_message), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -164,7 +162,7 @@ public class WaterGoalActivity extends AppCompatActivity {
 
     private void addWater(int amount) {
         if (goalCompleted) {
-            Toast.makeText(this, "Daily water goal already completed! 🎉", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.water_goal_completed), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -176,23 +174,22 @@ public class WaterGoalActivity extends AppCompatActivity {
             goalCompleted = true;
             goalPrefs.edit().putBoolean("waterCompleted", true).apply();
 
-            // 🔥 Fuel ekle (artık burada)
             SharedPreferences fuelPrefs = getSharedPreferences("fuelPrefs", MODE_PRIVATE);
             int currentFuel = fuelPrefs.getInt("totalFuel", 0);
             fuelPrefs.edit().putInt("totalFuel", currentFuel + 1).apply();
 
-            Toast.makeText(this, "🎉 Water goal completed! +1 Fuel ⛽", Toast.LENGTH_LONG).show();
-            btnAddDrink.setText("Goal Completed! 🎉");
-            btnAddCup.setText("Goal Completed! 🎉");
+            Toast.makeText(this, getString(R.string.water_goal_completed), Toast.LENGTH_LONG).show();
+            btnAddDrink.setText(getString(R.string.water_goal_completed));
+            btnAddCup.setText(getString(R.string.water_goal_completed));
             btnAddDrink.setEnabled(false);
             btnAddCup.setEnabled(false);
         } else {
-            Toast.makeText(this, "Added " + amount + " ml. Keep going!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.goal_water) + ": " + amount + " ml", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void updateProgress() {
-        tvProgress.setText("Progress: " + totalDrank + " / " + dailyGoal + " ml");
+        tvProgress.setText(getString(R.string.goal_water) + ": " + totalDrank + " / " + dailyGoal + " ml");
 
         if (dailyGoal > 0) {
             int percentage = Math.min(100, (totalDrank * 100) / dailyGoal);
@@ -200,22 +197,22 @@ public class WaterGoalActivity extends AppCompatActivity {
         }
 
         if (goalCompleted || totalDrank >= dailyGoal) {
-            tvStatus.setText("✅ Goal Completed! 🎉");
+            tvStatus.setText(getString(R.string.water_goal_completed));
             tvStatus.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
         } else {
             int remaining = dailyGoal - totalDrank;
-            tvStatus.setText("💧 " + remaining + " ml remaining");
+            tvStatus.setText(remaining + " ml remaining");
             tvStatus.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
         }
 
         if (goalCompleted) {
-            btnAddDrink.setText("Goal Completed! 🎉");
-            btnAddCup.setText("Goal Completed! 🎉");
+            btnAddDrink.setText(getString(R.string.water_goal_completed));
+            btnAddCup.setText(getString(R.string.water_goal_completed));
             btnAddDrink.setEnabled(false);
             btnAddCup.setEnabled(false);
         } else {
-            btnAddDrink.setText("Add Water");
-            btnAddCup.setText("Add Cup (200ml)");
+            btnAddDrink.setText(getString(R.string.goal_water));
+            btnAddCup.setText(getString(R.string.goal_water) + " (" + CUP_AMOUNT + "ml)");
             btnAddDrink.setEnabled(true);
             btnAddCup.setEnabled(true);
         }

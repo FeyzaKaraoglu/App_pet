@@ -55,7 +55,7 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
                 long elapsedMillis = System.currentTimeMillis() - startTime;
                 int hours = (int) (elapsedMillis / 1000 / 60 / 60);
                 int minutes = (int) ((elapsedMillis / 1000 / 60) % 60);
-                tvSleepTimer.setText("Elapsed: " + hours + "h " + minutes + "m");
+                tvSleepTimer.setText(getString(R.string.elapsed_format, hours, minutes));
                 handler.postDelayed(this, 60000); // Update every minute
             }
         }
@@ -106,26 +106,26 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
             try {
                 goalHours = Integer.parseInt(text);
                 if (goalHours <= 0) {
-                    Toast.makeText(this, "Please enter a positive number!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.enter_positive_number), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 prefs.edit().putInt("goal", goalHours).apply();
                 goalPrefs.edit().putBoolean("sleepCompleted", false).apply();
                 goalCompleted = false;
                 updateProgress();
-                Toast.makeText(this, "Sleep goal set: " + goalHours + "h", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.sleep_goal_set, goalHours), Toast.LENGTH_SHORT).show();
             } catch (NumberFormatException e) {
-                Toast.makeText(this, "Please enter a valid number!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.enter_valid_number), Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(this, "Please enter a sleep goal!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.enter_sleep_goal), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void startSleepMode() {
         if (isSleeping) return;
         if (goalHours <= 0) {
-            Toast.makeText(this, "Please set a sleep goal first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.set_sleep_goal_first), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -140,7 +140,7 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
 
         handler.post(sleepRunnable);
         updateButtonStates();
-        Toast.makeText(this, "Sleep mode started! Place phone face down in dark room", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.sleep_mode_started), Toast.LENGTH_LONG).show();
     }
 
     private void stopSleepMode() {
@@ -158,11 +158,11 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         sensorManager.unregisterListener(this);
         updateProgress();
         updateButtonStates();
-        tvSleepTimer.setText("Elapsed: 0h 0m");
+        tvSleepTimer.setText(getString(R.string.elapsed_format, 0, 0));
 
-        Toast.makeText(this, "Sleep session recorded: " + minutesElapsed + " minutes", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.sleep_session_recorded, minutesElapsed), Toast.LENGTH_SHORT).show();
 
-        // 🔥 Fuel ekleme burada
+        // 🔥 Fuel ekleme
         if (!goalCompleted && (totalSleptMinutes / 60 >= goalHours)) {
             goalCompleted = true;
             goalPrefs.edit().putBoolean("sleepCompleted", true).apply();
@@ -171,7 +171,7 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
             int currentFuel = fuelPrefs.getInt("totalFuel", 0);
             fuelPrefs.edit().putInt("totalFuel", currentFuel + 1).apply();
 
-            Toast.makeText(this, "🎉 Sleep goal completed! +1 Fuel ⛽", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.sleep_goal_completed), Toast.LENGTH_LONG).show();
         }
 
         lightThresholdMet = false;
@@ -181,8 +181,8 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
     private void updateProgress() {
         int hoursSlept = totalSleptMinutes / 60;
         int minutesSlept = totalSleptMinutes % 60;
-        String progressText = "Progress: " + hoursSlept + "h " + minutesSlept + "m / " + goalHours + "h";
-        if (hoursSlept >= goalHours) progressText += " ✓ GOAL ACHIEVED!";
+        String progressText = getString(R.string.progress_format, hoursSlept, minutesSlept, goalHours);
+        if (hoursSlept >= goalHours) progressText += getString(R.string.goal_achieved_suffix);
         tvSleepProgress.setText(progressText);
     }
 
@@ -227,7 +227,7 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
 
     private void goBack() {
         if (isSleeping) {
-            Toast.makeText(this, "Please stop sleep mode first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.stop_sleep_first), Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(SleepGoalActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -264,7 +264,7 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
         if (lightThresholdMet && movementThresholdMet &&
                 (currentTime - lastWakeCheckTime) > WAKE_CHECK_COOLDOWN) {
             lastWakeCheckTime = currentTime;
-            Toast.makeText(this, "Wake-up detected: Light + Movement", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.wake_detected), Toast.LENGTH_SHORT).show();
             stopSleepMode();
         } else if (lightThresholdMet || movementThresholdMet) {
             handler.removeCallbacks(resetWakeFlags);

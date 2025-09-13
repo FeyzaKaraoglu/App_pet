@@ -11,7 +11,7 @@
         android:id="@+id/headerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="👟 Steps Goal"
+        android:text="@string/goal_steps"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#1976D2"
@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Daily Step Goal"
+                android:text="@string/steps_goal"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
@@ -48,7 +48,7 @@
                 android:id="@+id/etStepGoal"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Enter daily steps"
+                android:hint="@string/enter_positive_number"
                 android:inputType="number"
                 android:padding="12dp"
                 android:layout_marginBottom="12dp" />
@@ -57,7 +57,7 @@
                 android:id="@+id/btnSetStepGoal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Set Daily Goal"
+                android:text="@string/set_daily_goal"
                 android:backgroundTint="#4CAF50"
                 android:textColor="@android:color/white"
                 app:cornerRadius="8dp" />
@@ -85,7 +85,7 @@
                 android:id="@+id/tvStepProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Steps: 0 / 0"
+                android:text="@string/steps_goal_completed"
                 android:textSize="16sp"
                 android:layout_marginBottom="12dp" />
 
@@ -104,7 +104,7 @@
         android:id="@+id/btnBack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="← Back to Main"
+        android:text="@string/back_to_main"
         android:backgroundTint="#757575"
         android:textColor="@android:color/white"
         app:cornerRadius="8dp"

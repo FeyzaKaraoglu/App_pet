@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,27 +12,22 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.activity_main2);
+        setContentView(R.layout.settings);
 
-       // btnLang = findViewById(R.id.btnLang);
-        //btnName = findViewById(R.id.btnPetName);
-        //btnColor = findViewById(R.id.btnColor);
-       // btnReset = findViewById(R.id.btnReset);
+        btnLang = findViewById(R.id.btnLang);
+        btnName = findViewById(R.id.btnPetName);
+        btnColor = findViewById(R.id.btnColor);
+        btnReset = findViewById(R.id.btnReset);
 
-        btnLang.setOnClickListener(v -> {
-            // Dil değiştirme kodu
-        });
+        // Strings.xml’den metinler
+        btnLang.setText(getResources().getString(R.string.settings_language));
+        btnName.setText(getResources().getString(R.string.settings_pet_name));
+        btnColor.setText(getResources().getString(R.string.settings_color));
+        btnReset.setText(getResources().getString(R.string.settings_reset));
 
-        btnName.setOnClickListener(v -> {
-            // Pet ismi değiştirme kodu
-        });
-
-        btnColor.setOnClickListener(v -> {
-            // Renk değiştirme kodu
-        });
-
-        btnReset.setOnClickListener(v -> {
-            // Sıfırlama kodu
-        });
+        btnLang.setOnClickListener(v -> startActivity(new Intent(SettingsActivity.this, LanguageActivity.class)));
+        btnName.setOnClickListener(v -> {/* Pet name değişimi */});
+        btnColor.setOnClickListener(v -> {/* Renk değişimi */});
+        btnReset.setOnClickListener(v -> {/* Sıfırlama işlemi */});
     }
 }

@@ -52,14 +52,26 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
         setContentView(R.layout.activity_steps_goal);
 
         instance = this;
+        initializeViews();
+        setupPreferences();
+        initializeDateAndGoals();
+        setupClickListeners();
+        checkActivityRecognitionPermission();
+    }
+
+    private void initializeViews() {
         etStepGoal = findViewById(R.id.etStepGoal);
         btnSetStepGoal = findViewById(R.id.btnSetStepGoal);
         btnBack = findViewById(R.id.btnBack);
         tvStepProgress = findViewById(R.id.tvStepProgress);
+    }
 
+    private void setupPreferences() {
         stepsPrefs = getSharedPreferences("stepsPrefs", MODE_PRIVATE);
         goalPrefs = getSharedPreferences("goalCompletionPrefs", MODE_PRIVATE);
+    }
 
+    private void initializeDateAndGoals() {
         today = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
         String savedDate = stepsPrefs.getString("lastDate", "");
 
@@ -67,11 +79,13 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
         if (dailyStepGoal > 0) {
             etStepGoal.setText(String.valueOf(dailyStepGoal));
         }
+
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         if (sensorManager != null) {
             stepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
             stepDetector = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         }
+
         if (!today.equals(savedDate)) {
             resetDailyProgress();
         } else {
@@ -79,32 +93,34 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
             todaySteps = stepsPrefs.getInt("todaySteps", 0);
             goalCompleted = goalPrefs.getBoolean("stepsCompleted", false);
         }
+        updateStepProgress();
+    }
 
-        btnSetStepGoal.setOnClickListener(v -> {
-            String goalText = etStepGoal.getText().toString().trim();
-            if (goalText.isEmpty()) {
-                Toast.makeText(this, "Please enter a daily step goal!", Toast.LENGTH_SHORT).show();
+    private void setupClickListeners() {
+        btnSetStepGoal.setOnClickListener(v -> setStepGoal());
+        btnBack.setOnClickListener(v -> goBackToMain());
+    }
+
+    private void setStepGoal() {
+        String goalText = etStepGoal.getText().toString().trim();
+        if (goalText.isEmpty()) {
+            Toast.makeText(this, getString(R.string.steps_goal), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            dailyStepGoal = Integer.parseInt(goalText);
+            if (dailyStepGoal <= 0) {
+                Toast.makeText(this, getString(R.string.steps_enter_positive), Toast.LENGTH_SHORT).show();
                 return;
             }
-            try {
-                dailyStepGoal = Integer.parseInt(goalText);
-                if (dailyStepGoal <= 0) {
-                    Toast.makeText(this, "Please enter a positive number!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                stepsPrefs.edit().putInt("dailyStepGoal", dailyStepGoal).apply();
-                goalPrefs.edit().putBoolean("stepsCompleted", false).apply();
-                goalCompleted = false;
-                updateStepProgress();
-                Toast.makeText(this, "Step goal set: " + dailyStepGoal, Toast.LENGTH_SHORT).show();
-            } catch (NumberFormatException e) {
-                Toast.makeText(this, "Please enter a valid number!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btnBack.setOnClickListener(v -> goBackToMain());
-
-        checkActivityRecognitionPermission();
+            stepsPrefs.edit().putInt("dailyStepGoal", dailyStepGoal).apply();
+            goalPrefs.edit().putBoolean("stepsCompleted", false).apply();
+            goalCompleted = false;
+            updateStepProgress();
+            Toast.makeText(this, getString(R.string.steps_goal_set, dailyStepGoal), Toast.LENGTH_SHORT).show();
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, getString(R.string.enter_positive_number), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void resetDailyProgress() {
@@ -145,7 +161,7 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 registerStepSensors();
             } else {
-                Toast.makeText(this, "Permission denied, steps won't be counted!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.steps_permission_denied), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -169,7 +185,7 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
             } else if (stepDetector != null) {
                 sensorManager.registerListener(this, stepDetector, SensorManager.SENSOR_DELAY_UI);
             } else {
-                Toast.makeText(this, "Step sensors not available!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.steps_sensor_not_available), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -210,12 +226,11 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
             goalCompleted = true;
             goalPrefs.edit().putBoolean("stepsCompleted", true).apply();
 
-            // 🔥 Fuel ekle
             SharedPreferences fuelPrefs = getSharedPreferences("fuelPrefs", MODE_PRIVATE);
             int currentFuel = fuelPrefs.getInt("totalFuel", 0);
             fuelPrefs.edit().putInt("totalFuel", currentFuel + 1).apply();
 
-            Toast.makeText(this, "🎉 Steps goal completed! +1 Fuel ⛽", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.steps_goal_completed), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -223,9 +238,9 @@ public class StepsGoalActivity extends AppCompatActivity implements SensorEventL
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     private void updateStepProgress() {
-        String progressText = "Steps: " + todaySteps + " / " + dailyStepGoal;
+        String progressText = getString(R.string.steps_progress, todaySteps, dailyStepGoal);
         if (goalCompleted || (dailyStepGoal > 0 && todaySteps >= dailyStepGoal)) {
-            progressText += " ✓ GOAL ACHIEVED!";
+            progressText += " " + getString(R.string.goal_achieved);
         }
         tvStepProgress.setText(progressText);
     }

@@ -8,15 +8,19 @@
     android:background="@drawable/background"
     tools:context=".MainActivity">
 
+    <!-- PET CARD -->
+
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
         android:layout_height="80dp"
+        android:layout_marginTop="36dp"
+        android:background="@android:color/transparent"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="16dp"
-        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="#4CAF50"
-            android:text="Goals"
+            android:text="@string/btn_goals"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:cornerRadius="20dp" />
@@ -41,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="#2196F3"
-            android:text="Settings"
+            android:text="@string/btn_settings"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:cornerRadius="20dp" />
@@ -51,11 +55,12 @@
         android:id="@+id/goalProgressLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/level_container_bg"
         android:orientation="vertical"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBar">
 
@@ -63,121 +68,120 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Daily Goals Progress"
+            android:layout_marginBottom="8dp"
+            android:text="@string/daily_goals_progress"
             android:textColor="#333"
             android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_margin="4dp"
                 android:gravity="center"
-                android:layout_margin="4dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/lvl1"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:layout_margin="2dp"
                     android:background="@drawable/level_box_shape"
                     android:gravity="center"
-                    android:textSize="16sp"
-                    android:layout_margin="2dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Water"
-                    android:textSize="10sp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/goal_water"
                     android:textColor="#666"
-                    android:layout_marginTop="2dp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_margin="4dp"
                 android:gravity="center"
-                android:layout_margin="4dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/lvl2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:layout_margin="2dp"
                     android:background="@drawable/level_box_shape"
                     android:gravity="center"
-                    android:textSize="16sp"
-                    android:layout_margin="2dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Steps"
-                    android:textSize="10sp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/goal_steps"
                     android:textColor="#666"
-                    android:layout_marginTop="2dp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_margin="4dp"
                 android:gravity="center"
-                android:layout_margin="4dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/lvl3"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:layout_margin="2dp"
                     android:background="@drawable/level_box_shape"
                     android:gravity="center"
-                    android:textSize="16sp"
-                    android:layout_margin="2dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sleep"
-                    android:textSize="10sp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/goal_sleep"
                     android:textColor="#666"
-                    android:layout_marginTop="2dp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_margin="4dp"
                 android:gravity="center"
-                android:layout_margin="4dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/lvl4"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
+                    android:layout_margin="2dp"
                     android:background="@drawable/level_box_shape"
                     android:gravity="center"
-                    android:textSize="16sp"
-                    android:layout_margin="2dp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Focus"
-                    android:textSize="10sp"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/goal_focus"
                     android:textColor="#666"
-                    android:layout_marginTop="2dp" />
+                    android:textSize="10sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- PET CARD -->
     <androidx.cardview.widget.CardView
         android:id="@+id/petCard"
         android:layout_width="260dp"
@@ -192,23 +196,25 @@
 
         <ImageView
             android:id="@+id/petImage"
-            android:layout_width="match_parent"
+            android:layout_width="261dp"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
             android:src="@mipmap/ic_launcher" />
     </androidx.cardview.widget.CardView>
 
     <!-- Pet Name -->
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Dinozorcuk"
+        android:layout_marginTop="28dp"
+        android:text="@string/pet_name"
+        android:textColor="#333"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="#333"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/petCard" />
 
@@ -216,11 +222,13 @@
         android:id="@+id/bottomBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@android:color/transparent"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp"
-        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView">
 
@@ -230,7 +238,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#FF9800"
             android:enabled="true"
-            android:text="🎮 Play Game"
+            android:text="@string/btn_play_game"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:cornerRadius="24dp" />
@@ -238,9 +246,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
             android:gravity="center"
-            android:layout_marginTop="8dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="24dp"
@@ -251,10 +259,10 @@
                 android:id="@+id/fuelCountText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
                 android:text="0"
-                android:textSize="16sp"
                 android:textColor="@android:color/black"
-                android:layout_marginStart="6dp"/>
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 

@@ -28,6 +28,10 @@ public class ScoreActivity extends AppCompatActivity {
         retryButton = findViewById(R.id.retryButton);
         mainMenuButton = findViewById(R.id.retryButton2);
 
+        // Placeholder olarak başlangıçta göster
+        scoreText.setText(getString(R.string.your_score_placeholder));
+        highScoreText.setText(getString(R.string.high_score_placeholder));
+
         int score = getIntent().getIntExtra("score", 0);
 
         // High score kontrolü
@@ -38,9 +42,9 @@ public class ScoreActivity extends AppCompatActivity {
             prefs.edit().putInt("high_score", highScore).apply();
         }
 
-        // Skorları göster
-        scoreText.setText("Your Score: " + score);
-        highScoreText.setText("High Score: " + highScore);
+        // Skorları güncelle (çok dilli)
+        scoreText.setText(getString(R.string.your_score, score));
+        highScoreText.setText(getString(R.string.high_score, highScore));
 
         // Retry butonu: fuel kontrolü
         retryButton.setOnClickListener(v -> {
@@ -63,13 +67,13 @@ public class ScoreActivity extends AppCompatActivity {
 
                 if (!anyGoalCompleted) {
                     new AlertDialog.Builder(ScoreActivity.this)
-                            .setTitle("No Fuel Available! ⛽")
-                            .setMessage("You need to complete daily goals to earn fuel and play games!")
-                            .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                            .setTitle(getString(R.string.no_fuel_title))
+                            .setMessage(getString(R.string.no_fuel_message))
+                            .setPositiveButton(getString(R.string.ok), (dialog, which) -> dialog.dismiss())
                             .show();
                 } else {
                     Toast.makeText(ScoreActivity.this,
-                            "Not enough fuel! Complete more daily goals to earn fuel ⛽",
+                            getString(R.string.not_enough_fuel_message),
                             Toast.LENGTH_LONG).show();
                 }
             }

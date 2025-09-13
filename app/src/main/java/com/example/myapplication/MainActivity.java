@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -9,20 +10,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.AlertDialog;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import java.util.Locale;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     public static MainActivity context;
 
     Button btnSettings, btnGoals, btnGame;
-    TextView fuelCountText, lvl1, lvl2, lvl3, lvl4,petNameView;
+    TextView fuelCountText, lvl1, lvl2, lvl3, lvl4, petNameView;
 
     SharedPreferences goalPrefs, fuelPrefs;
 
@@ -34,8 +36,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        applyLanguageSettings(); // Dil ayarını uygula
+
+        setContentView(R.layout.activity_main);
         context = this;
 
         initializeViews();
@@ -55,6 +59,24 @@ public class MainActivity extends AppCompatActivity {
         updateFuelDisplay();
         updatePetColor();
     }
+
+    // -----------------------------
+    // DİL AYARI METOTLARI
+    // -----------------------------
+    private void applyLanguageSettings() {
+        SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        String langCode = prefs.getString("app_language", "en");
+        setAppLocale(langCode);
+    }
+
+    private void setAppLocale(String langCode) {
+        Locale locale = new Locale(langCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+    }
+    // -----------------------------
 
     private void initializeViews() {
         btnSettings = findViewById(R.id.btnSettings);
@@ -104,10 +126,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateGoalChart() {
         loadGoalCompletionStatus();
-        updateLifeIndicator(lvl1, waterGoalCompleted, "💧");
-        updateLifeIndicator(lvl2, stepsGoalCompleted, "👟");
-        updateLifeIndicator(lvl3, sleepGoalCompleted, "😴");
-        updateLifeIndicator(lvl4, focusGoalCompleted, "🎯");
+        updateLifeIndicator(lvl1, waterGoalCompleted, "");
+        updateLifeIndicator(lvl2, stepsGoalCompleted, "");
+        updateLifeIndicator(lvl3, sleepGoalCompleted, "");
+        updateLifeIndicator(lvl4, focusGoalCompleted, "");
 
         updatePetName();
     }
@@ -124,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateFuelDisplay() {
         int currentFuel = fuelPrefs.getInt("totalFuel", 0);
-        fuelCountText.setText("⛽ " + currentFuel);
+        fuelCountText.setText(" " + currentFuel);
         updatePetName();
     }
 
@@ -136,28 +158,28 @@ public class MainActivity extends AppCompatActivity {
                 if (!waterGoalCompleted) {
                     goalEditor.putBoolean("waterCompleted", true);
                     waterGoalCompleted = true;
-                    showGoalCompletedMessage("Water goal completed! +1 Fuel ⛽");
+                    showGoalCompletedMessage(getString(R.string.water_goal_completed));
                 }
                 break;
             case "steps":
                 if (!stepsGoalCompleted) {
                     goalEditor.putBoolean("stepsCompleted", true);
                     stepsGoalCompleted = true;
-                    showGoalCompletedMessage("Steps goal completed! +1 Fuel ⛽");
+                    showGoalCompletedMessage(getString(R.string.steps_goal_completed));
                 }
                 break;
             case "sleep":
                 if (!sleepGoalCompleted) {
                     goalEditor.putBoolean("sleepCompleted", true);
                     sleepGoalCompleted = true;
-                    showGoalCompletedMessage("Sleep goal completed! +1 Fuel ⛽");
+                    showGoalCompletedMessage(getString(R.string.sleep_goal_completed));
                 }
                 break;
             case "focus":
                 if (!focusGoalCompleted) {
                     goalEditor.putBoolean("focusCompleted", true);
                     focusGoalCompleted = true;
-                    showGoalCompletedMessage("Focus goal completed! +1 Fuel ⛽");
+                    showGoalCompletedMessage(getString(R.string.focus_goal_completed));
                 }
                 break;
         }
@@ -196,155 +218,163 @@ public class MainActivity extends AppCompatActivity {
                     showNoFuelDialog();
                 } else {
                     Toast.makeText(this,
-                            "Not enough fuel! Complete more daily goals to earn fuel ⛽",
+                            getString(R.string.not_enough_fuel_message),
                             Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    private void showNoFuelDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("No Fuel Available! ⛽");
-        builder.setMessage("You need to complete daily goals to earn fuel and play games!\n\n" +
-                "Available goals:\n" +
-                "💧 Water Goal - Drink your daily water\n" +
-                "👟 Steps Goal - Walk your daily steps\n" +
-                "😴 Sleep Goal - Get enough sleep\n" +
-                "🎯 Focus Goal - Focus on your tasks\n\n" +
-                "Each completed goal gives you 1 fuel!");
-
-        builder.setPositiveButton("View Goals", (dialog, which) -> {
-            showGoalsDialog();
-        });
-
-        builder.setNegativeButton("OK", (dialog, which) -> {
-            dialog.dismiss();
-        });
-
-        builder.show();
-    }
-
-    private void showGoalsDialog() {
-        String[] options = {"💧 Water Goal", "👟 Steps Goal", "😴 Sleeping Goal", "🎯 Focusing Goal"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Daily Goals - Earn Fuel!");
-        builder.setItems(options, (dialog, which) -> {
-            switch (which) {
-                case 0:
-                    startActivity(new Intent(this, WaterGoalActivity.class));
-                    break;
-                case 1:
-                    startActivity(new Intent(this, StepsGoalActivity.class));
-                    break;
-                case 2:
-                    startActivity(new Intent(this, SleepGoalActivity.class));
-                    break;
-                case 3:
-                    startActivity(new Intent(this, FocusGoalActivity.class));
-                    break;
-            }
-        });
-        builder.show();
-    }
-
+    // -----------------------------
+    // SETTINGS DIALOG
+    // -----------------------------
     private void showSettingsDialog() {
-        String[] options = {"Languages", "Pet name", "Color", "Reset Progress"};
+        String[] settingsOptions = {
+                getString(R.string.settings_language),
+                getString(R.string.settings_pet_name),
+                getString(R.string.settings_color),
+                getString(R.string.settings_reset)
+        };
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Settings");
-        builder.setItems(options, (dialog, which) -> {
+        builder.setTitle(getString(R.string.settings));
+        builder.setItems(settingsOptions, (dialog, which) -> {
             switch (which) {
-                case 0:
-                    Toast.makeText(this, "Language settings coming soon!", Toast.LENGTH_SHORT).show();
-                    break;
-                case 1:
-                    changePetName();
-                    break;
-                case 2:
-                    changePetColor();
-                    break;
-                case 3:
-                    resetDailyProgress();
-                    break;
+                case 0: showLanguageDialog(); break;
+                case 1: showPetNameDialog(); break;
+                case 2: showColorDialog(); break;
+                case 3: confirmResetProgress(); break;
             }
         });
         builder.show();
     }
-    private void changePetColor() {
-        String[] colors = {"Purple", "Yellow", "Green"};
+
+    private void showLanguageDialog() {
+        String[] languages = {"🇺🇸 English", "🇹🇷 Türkçe", "🇩🇪 Deutsch"};
+        final String[] langCodes = {"en","tr","de"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose Pet Color");
-        builder.setItems(colors, (dialog, which) -> {
-            String selectedColor = colors[which];
-            goalPrefs.edit().putString("petColor", selectedColor).apply(); // seçimi kaydet
-            updatePetColor(); // ekranda değiştir
+        builder.setTitle(getString(R.string.languages));
+        builder.setItems(languages, (dialog, which) -> {
+            String selectedLang = langCodes[which];
+            SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+            prefs.edit().putString("app_language", selectedLang).apply();
+            recreate();
         });
         builder.show();
     }
-    private void updatePetColor() {
-        String color = goalPrefs.getString("petColor", "Green"); // varsayılan Red
-        ImageView petImage = findViewById(R.id.petImage);
 
-        switch (color) {
-            case "Purple":
-                petImage.setImageResource(R.drawable.pet_purple);
-                break;
-            case "Yellow":
-                petImage.setImageResource(R.drawable.pet_yellow);
-                break;
-            default:
-                petImage.setImageResource(R.drawable.pet_green);
-                break;
-        }
-    }
+    private void showPetNameDialog() {
+        EditText input = new EditText(this);
+        input.setHint(getString(R.string.pet_name_hint));
 
-    private void changePetName() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.change_pet_name));
-        final android.widget.EditText input = new android.widget.EditText(this);
-        input.setHint(getString(R.string.enter_new_name));
         builder.setView(input);
         builder.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
             String newName = input.getText().toString().trim();
             if (!newName.isEmpty()) {
-                petNameView.setText(newName);
                 goalPrefs.edit().putString("petName", newName).apply();
-                Toast.makeText(this, getString(R.string.pet_name_changed, newName), Toast.LENGTH_SHORT).show();
+                updatePetName();
+                Toast.makeText(this, String.format(getString(R.string.pet_name_changed), newName), Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         builder.show();
     }
-    private void updatePetName() {
-        try {
-            String savedPetName = goalPrefs.getString("petName", "MyPet");
-            if (petNameView != null) {
-                petNameView.setText(savedPetName);
+
+    private void showColorDialog() {
+        String[] colors = {
+                getString(R.string.dialog_color_purple),
+                getString(R.string.dialog_color_yellow),
+                getString(R.string.dialog_color_green)
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.choose_pet_color));
+        builder.setItems(colors, (dialog, which) -> {
+            String selectedColor;
+            switch (which) {
+                case 0: selectedColor = "Purple"; break;
+                case 1: selectedColor = "Yellow"; break;
+                default: selectedColor = "Green"; break;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            goalPrefs.edit().putString("petColor", selectedColor).apply();
+            updatePetColor();
+
+            Toast.makeText(this,
+                    String.format(getString(R.string.pet_color_changed), colors[which]),
+                    Toast.LENGTH_SHORT).show();
+        });
+        builder.show();
+    }
+
+    private void confirmResetProgress() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.reset_progress_title));
+        builder.setMessage(getString(R.string.reset_progress_message));
+        builder.setPositiveButton(getString(R.string.yes), (dialog, which) -> resetDailyProgress());
+        builder.setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
+    private void resetDailyProgress() {
+        goalPrefs.edit().clear().apply();
+        fuelPrefs.edit().clear().apply();
+        checkDailyReset();
+        updateGoalChart();
+        updateFuelDisplay();
+        Toast.makeText(this, getString(R.string.progress_reset_success), Toast.LENGTH_SHORT).show();
+    }
+
+    // -----------------------------
+    // GOALS
+    // -----------------------------
+    private void showNoFuelDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.no_fuel_title));
+        builder.setMessage(getString(R.string.no_fuel_message));
+        builder.setPositiveButton(getString(R.string.view_goals), (dialog, which) -> showGoalsDialog());
+        builder.setNegativeButton(getString(R.string.ok), (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
+    private void showGoalsDialog() {
+        String[] options = {
+                getString(R.string.goal_water),
+                getString(R.string.goal_steps),
+                getString(R.string.goal_sleep),
+                getString(R.string.goal_focus)
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.daily_goals));
+        builder.setItems(options, (dialog, which) -> {
+            switch (which) {
+                case 0: startActivity(new Intent(this, WaterGoalActivity.class)); break;
+                case 1: startActivity(new Intent(this, StepsGoalActivity.class)); break;
+                case 2: startActivity(new Intent(this, SleepGoalActivity.class)); break;
+                case 3: startActivity(new Intent(this, FocusGoalActivity.class)); break;
+            }
+        });
+        builder.show();
+    }
+
+    private void updatePetColor() {
+        String color = goalPrefs.getString("petColor", "Green");
+        ImageView petImage = findViewById(R.id.petImage);
+
+        switch (color) {
+            case "Purple": petImage.setImageResource(R.drawable.pet_purple); break;
+            case "Yellow": petImage.setImageResource(R.drawable.pet_yellow); break;
+            default: petImage.setImageResource(R.drawable.pet_green); break;
         }
     }
-    private void resetDailyProgress() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Reset Daily Progress");
-        builder.setMessage("This will reset all today's goal progress AND fuel. Are you sure?");
-        builder.setPositiveButton("Yes", (dialog, which) -> {
-            SharedPreferences.Editor editor = goalPrefs.edit();
-            editor.putBoolean("waterCompleted", false);
-            editor.putBoolean("stepsCompleted", false);
-            editor.putBoolean("sleepCompleted", false);
-            editor.putBoolean("focusCompleted", false);
-            editor.apply();
 
-            fuelPrefs.edit().putInt("totalFuel", 0).apply();
-            updateGoalChart();
-            updateFuelDisplay();
-
-            Toast.makeText(this, "Daily progress and fuel reset!", Toast.LENGTH_SHORT).show();
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
+    private void updatePetName() {
+        try {
+            String savedPetName = goalPrefs.getString("petName", getString(R.string.default_pet_name));
+            if (petNameView != null) petNameView.setText(savedPetName);
+        } catch (Exception e) { e.printStackTrace(); }
     }
 }

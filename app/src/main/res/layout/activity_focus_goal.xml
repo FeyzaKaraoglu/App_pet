@@ -6,17 +6,19 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="#FFFDE7">
+
     <TextView
         android:id="@+id/headerTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="🎯 Focus Goal"
+        android:text="@string/focus_goal_header"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#F57F17"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/goalCard"
         android:layout_width="0dp"
@@ -37,7 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Daily Focus Goal (minutes)"
+                android:text="@string/daily_focus_goal"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#333"
@@ -47,7 +49,7 @@
                 android:id="@+id/etFocusGoal"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:hint="Enter minutes (e.g., 30)"
+                android:hint="@string/focus_goal_hint"
                 android:inputType="number"
                 android:padding="12dp"
                 android:background="@drawable/edittext_background"
@@ -57,12 +59,13 @@
                 android:id="@+id/btnSaveGoal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Save Focus Goal"
+                android:text="@string/save_focus_goal"
                 android:backgroundTint="#FBC02D"
                 android:textColor="@android:color/white"
                 app:cornerRadius="8dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/progressCard"
         android:layout_width="0dp"
@@ -84,7 +87,7 @@
                 android:id="@+id/tvFocusTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Elapsed: 0m 0s"
+                android:text="@string/focus_timer_default"
                 android:textSize="16sp"
                 android:textColor="#666"
                 android:layout_marginBottom="8dp"/>
@@ -93,11 +96,12 @@
                 android:id="@+id/tvFocusProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Progress: 0 / 0 min"
+                android:text="@string/focus_progress_default"
                 android:textSize="16sp"
                 android:textColor="#666"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/controlCard"
         android:layout_width="0dp"
@@ -119,7 +123,7 @@
                 android:id="@+id/btnStartFocus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Start Focus Mode"
+                android:text="@string/start_focus_mode"
                 android:backgroundTint="#F57F17"
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="8dp"
@@ -129,18 +133,19 @@
                 android:id="@+id/btnStopFocus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Stop Focus Mode"
+                android:text="@string/stop_focus_mode"
                 android:backgroundTint="#D32F2F"
                 android:textColor="@android:color/white"
                 app:cornerRadius="8dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
     <Button
         android:id="@+id/btnBack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="← Back to Main"
+        android:text="@string/back_to_main"
         android:backgroundTint="#757575"
         android:textColor="@android:color/white"
         android:textSize="16sp"

@@ -1,0 +1,186 @@
+<resources>
+    <string name="app_name">MyApp</string>
+
+    <!-- Allgemeine Ziele -->
+    <string name="goal_saved">Ziel gespeichert: %1$d Minuten</string>
+    <string name="enter_positive_number">Positive Zahl eingeben</string>
+    <string name="enter_your_goal">Ihr Ziel eingeben</string>
+    <string name="set_goal_first">Zuerst ein Ziel setzen</string>
+    <string name="focused_minutes">%1$d Minuten fokussiert</string>
+    <string name="elapsed">Verstrichene Zeit: %1$02d:%2$02d</string>
+    <string name="progress">Fortschritt: %1$d / %2$d Minuten</string>
+    <string name="goal_achieved">✓ ZIEL ERREICHT! </string>
+    <string name="stop_focus_first">Fokus-Modus zuerst stoppen</string>
+
+    <!-- Punkte -->
+    <string name="score_text">Punkte: %1$d</string>
+    <string name="level_text">Level: %1$d</string>
+
+    <!-- Einstellungen -->
+    <string name="settings">Einstellungen</string>
+    <string name="languages">Sprachen</string>
+    <string name="pet_name">Haustier-Name</string>
+    <string name="color">Farbe</string>
+    <string name="reset_progress">Fortschritt zurücksetzen</string>
+    <string name="change_pet_name">Haustier-Name ändern</string>
+    <string name="enter_new_name">Neuen Namen eingeben</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="reset_daily_progress">Täglichen Fortschritt zurücksetzen</string>
+    <string name="reset_progress_message">Dies wird den gesamten heutigen Zielfortschritt zurücksetzen. Sind Sie sicher?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="settings_language">Spracheinstellungen</string>
+    <string name="settings_pet_name">Haustier-Name Einstellungen</string>
+    <string name="settings_color">Farbeinstellungen</string>
+    <string name="settings_reset">Fortschritt zurücksetzen</string>
+
+    <!-- Tägliche Ziele -->
+    <string name="daily_goals">🎯 Tägliche Ziele</string>
+    <string name="water_goal">💧 Wasser-Ziel</string>
+    <string name="steps_goal">🚶 Schritte-Ziel</string>
+    <string name="sleep_goal">😴Schlaf-Ziel</string>
+    <string name="focus_goal">🧐Fokus-Ziel</string>
+    <string name="language_coming_soon">Spracheinstellungen kommen bald!</string>
+    <string name="color_coming_soon">Farbeinstellungen kommen bald!</string>
+    <string name="pet_name_changed">Haustier-Name geändert zu %1$s</string>
+    <string name="daily_progress_reset">Täglicher Fortschritt zurückgesetzt!</string>
+
+    <!-- Spiel -->
+    <string name="score_label">Punkte: %1$d</string>
+    <string name="game_over">SPIEL BEENDET</string>
+    <string name="restart_game">Spiel neustarten</string>
+    <string name="your_score">Ihre Punkte: %1$d</string>
+    <string name="high_score">Höchste Punktzahl: %1$d</string>
+    <string name="retry">Wiederholen</string>
+    <string name="main_menu">Hauptmenü</string>
+
+    <!-- Schlaf-Ziel -->
+    <string name="sleep_goal_title">Schlaf-Ziel</string>
+    <string name="set_sleep_goal">Schlaf-Ziel setzen</string>
+    <string name="enter_sleep_goal">Bitte geben Sie ein Schlaf-Ziel ein!</string>
+    <string name="set_sleep_goal_first">Bitte setzen Sie zuerst ein Schlaf-Ziel</string>
+    <string name="sleep_goal_set">Schlaf-Ziel gesetzt: %1$d Stunden</string>
+    <string name="start_sleep_mode">Schlaf-Modus starten</string>
+    <string name="stop_sleep_mode">Schlaf-Modus stoppen</string>
+    <string name="sleep_mode_started">Schlaf-Modus gestartet! Handy mit Bildschirm nach unten in einem dunklen Raum platzieren</string>
+    <string name="sleep_session_recorded">Schlaf aufgezeichnet: %1$d Minuten</string>
+    <string name="sleep_goal_completed">🎉 Schlaf-Ziel erreicht! +1 Kraftstoff </string>
+    <string name="elapsed_format">Verstrichene Zeit: %1$d Stunden %2$d Minuten</string>
+    <string name="progress_format">Fortschritt: %1$d Stunden %2$d Minuten / %3$d Stunden</string>
+    <string name="goal_achieved_suffix"> ✓ ZIEL ERREICHT!</string>
+    <string name="stop_sleep_first">Bitte stoppen Sie zuerst den Schlaf-Modus</string>
+    <string name="wake_detected">Aufwachen erkannt: Licht + Bewegung</string>
+    <string name="daily_sleep_goal_label">Tägliches Schlaf-Ziel (Stunden)</string>
+    <string name="daily_sleep_goal_hint">Tägliches Schlaf-Ziel eingeben (z.B. 8)</string>
+    <string name="save_sleep_goal">Schlaf-Ziel speichern</string>
+    <string name="sleep_timer_label">Schlaf-Timer</string>
+    <string name="sleep_timer">Verstrichene Zeit: %1$d Stunden %2$d Minuten</string>
+    <string name="sleep_enter_positive">Bitte geben Sie eine positive Zahl ein!</string>
+    <string name="sleep_enter_valid_number">Bitte geben Sie eine gültige Zahl ein!</string>
+    <string name="sleep_progress">Fortschritt: %1$d Stunden %2$d Minuten / %3$d Stunden</string>
+    <string name="sleep_goal_achieved">✓ ZIEL ERREICHT!</string>
+    <string name="sleep_wakeup_detected">Aufwachen erkannt: Licht + Bewegung</string>
+
+    <!-- Schritte-Ziel -->
+    <string name="steps_enter_goal">Geben Sie Ihr tägliches Schritte-Ziel ein!</string>
+    <string name="steps_enter_positive">Positive Zahl eingeben!</string>
+    <string name="steps_enter_valid_number">Gültige Zahl eingeben!</string>
+    <string name="steps_goal_set">Schritte-Ziel gesetzt: %1$d</string>
+    <string name="steps_permission_denied">Berechtigung verweigert, Schritte werden nicht gezählt!</string>
+    <string name="steps_sensor_not_available">Schritt-Sensoren nicht verfügbar!</string>
+    <string name="steps_goal_completed"> Schritte-Ziel erreicht! Ihr Haustier hat ein Leben erhalten!</string>
+    <string name="steps_progress">Schritte: %1$d / %2$d</string>
+    <string name="steps_goal_achieved">ZIEL ERREICHT!</string>
+
+    <!-- Wasser-Ziel -->
+    <string name="water_goal_title">💧 Wasser-Ziel</string>
+    <string name="daily_goal_ml">Tägliches Ziel (ml)</string>
+    <string name="enter_daily_water_goal">Tägliches Wasser-Ziel eingeben (z.B. 2000)</string>
+    <string name="set_daily_goal">Tägliches Ziel setzen</string>
+    <string name="todays_progress">Heutiger Fortschritt</string>
+    <string name="progress_text">Fortschritt: %1$d / %2$d ml</string>
+    <string name="goal_not_started">💧 Ziel setzen zum Starten!</string>
+    <string name="add_water_intake">Wasseraufnahme hinzufügen</string>
+    <string name="custom_amount_hint">Benutzerdefinierte Menge (ml)</string>
+    <string name="add_water">Wasser hinzufügen</string>
+    <string name="add_cup">🫖 Tasse hinzufügen (200ml)</string>
+    <string name="back_to_main">← Zurück zum Hauptmenü</string>
+    <string name="enter_daily_goal">Bitte tägliches Ziel eingeben!</string>
+    <string name="goal_must_be_positive">Ziel muss größer als 0 sein!</string>
+    <string name="daily_goal_set">Tägliches Ziel gesetzt: %1$d ml</string>
+    <string name="enter_valid_number">Bitte gültige Zahl eingeben!</string>
+    <string name="enter_water_amount">Bitte Wassermenge eingeben!</string>
+    <string name="amount_must_be_positive">Menge muss größer als 0 sein!</string>
+    <string name="daily_goal_completed">Tägliches Wasser-Ziel bereits erreicht! </string>
+    <string name="water_goal_completed">Wasser-Ziel erreicht! +1 Kraftstoff</string>
+    <string name="goal_completed">Ziel erreicht!</string>
+    <string name="added_amount_keep_going">%1$d ml hinzugefügt. Weitermachen!</string>
+    <string name="progress_status">Fortschritt: %1$d / %2$d ml</string>
+    <string name="remaining_ml">%1$d ml verbleibend</string>
+
+    <!-- Schaltflächen -->
+    <string name="btn_play_game">Spiel spielen</string>
+    <string name="btn_goals">Ziele</string>
+    <string name="btn_settings">Einstellungen</string>
+    <string name="btn_game">Spiel</string>
+    <string name="daily_goals_progress">Täglicher Zielfortschritt</string>
+
+    <!-- Hauptaktivität Zielnamen -->
+    <string name="goal_water">💧Wasser-Ziel</string>
+    <string name="goal_steps">🚶 Schritte-Ziel</string>
+    <string name="goal_sleep">😴Schlaf-Ziel</string>
+    <string name="goal_focus">🧐Fokus-Ziel</string>
+
+    <!-- Standard-Format-Strings -->
+    <string name="elapsed_format_0h_0m">Verstrichene Zeit: 0 Stunden 0 Minuten</string>
+    <string name="progress_format_0h_0m">Fortschritt: 0 Stunden 0 Minuten / 0 Stunden</string>
+
+    <!-- Menü -->
+    <string name="tv_daily_goals_progress">Täglicher Zielfortschritt</string>
+    <string name="tv_water">💧Wasser</string>
+    <string name="tv_steps">🚶 Schritte</string>
+    <string name="tv_sleep">😴Schlaf</string>
+    <string name="tv_focus">🧐Fokus</string>
+
+    <!-- Dialoge -->
+    <string name="dialog_color_title">Haustier-Farbe wählen</string>
+    <string name="dialog_color_purple">Lila</string>
+    <string name="dialog_color_yellow">Gelb</string>
+    <string name="dialog_color_green">Grün</string>
+    <string name="dialog_color_success">Haustier-Farbe geändert zu %1$s</string>
+
+    <!-- Verschiedenes -->
+    <string name="default_pet_name">MeinHaustier</string>
+    <string name="view_goals">Ziele anzeigen</string>
+    <string name="no_fuel_message">Sie müssen tägliche Ziele erfüllen, um Spiele zu spielen und Kraftstoff zu verdienen!</string>
+    <string name="no_fuel_title">Kein Kraftstoff!</string>
+    <string name="progress_reset_success">Täglicher Fortschritt zurückgesetzt!</string>
+    <string name="reset_progress_title">Täglichen Fortschritt zurücksetzen</string>
+    <string name="pet_color_changed">Haustier-Farbe geändert zu %1$s</string>
+    <string name="choose_pet_color">Haustier-Farbe wählen</string>
+    <string name="pet_name_hint">Haustier-Namen eingeben</string>
+    <string name="not_enough_fuel_message">Nicht genug Kraftstoff! Erfüllen Sie mehr tägliche Ziele, um Kraftstoff zu verdienen.</string>
+
+    <!-- Fokus-Ziel-Aktivität -->
+    <string name="focus_goal_header">🎯 Fokus-Ziel</string>
+    <string name="daily_focus_goal">Tägliches Fokus-Ziel (Minuten)</string>
+    <string name="focus_goal_hint">Minuten eingeben (z.B. 30)</string>
+    <string name="save_focus_goal">Fokus-Ziel speichern</string>
+    <string name="focus_timer_default">Verstrichene Zeit: 0 Minuten 0 Sekunden</string>
+    <string name="focus_progress_default">Fortschritt: 0 / 0 Min</string>
+    <string name="start_focus_mode">Fokus-Modus starten</string>
+    <string name="stop_focus_mode">Fokus-Modus stoppen</string>
+
+    <!-- Toasts und dynamische Nachrichten -->
+    <string name="enter_goal">Ihr Ziel eingeben</string>
+    <string name="elapsed_time">Verstrichene Zeit: %1$02d:%2$02d</string>
+    <string name="focus_goal_completed">🎉 Fokus-Ziel erreicht! +1 Kraftstoff </string>
+    <string name="progress_goal_achieved">✓ Ziel erreicht!</string>
+
+    <!-- Spiel-Ende-Bildschirm -->
+    <string name="your_score_placeholder">🏆 Ihre Punkte: %1$d</string>
+    <string name="high_score_placeholder">👑 Höchste Punktzahl: %1$d</string>
+    <string name="play_again">🎮 NOCHMAL SPIELEN</string>
+    <string name="go_to_main_menu">🏠 ZURÜCK ZUM HAUPTMENÜ</string>
+</resources>
