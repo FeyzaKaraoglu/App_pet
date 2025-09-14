@@ -18,43 +18,29 @@ public class GameView extends View {
     public interface GameEventListener {
         void onGameOver(int score);
     }
-
     private GameEventListener gameEventListener;
 
     public void setGameEventListener(GameEventListener listener) {
         this.gameEventListener = listener;
     }
 
-    private Paint paint;
-    private Bitmap rocketBitmap;
-    private Bitmap starBitmap;
-    private Bitmap boosterBitmap;
-    private Bitmap asteroidBitmap;
-    private Bitmap backgroundBitmap;
-
+    private final Paint paint;
+    private Bitmap rocketBitmap, starBitmap, boosterBitmap, asteroidBitmap, backgroundBitmap;
+    private Bitmap scaledRocket, scaledStar, scaledBooster, scaledAsteroid, scaledBackground;
     private float rocketX;
     private float rocketY;
-    private float rocketWidth = 140;
-    private float rocketHeight = 200;
-
-    private float rocketSpeedX = 15;
-    private float baseVelocityY = 5;
+    private final float rocketWidth = 140;
+    private final float rocketHeight = 200;
     private float boostVelocity = 0;
-
-    private List<GameObject> stars = new ArrayList<>();
-    private List<GameObject> boosters = new ArrayList<>();
-    private List<GameObject> asteroids = new ArrayList<>();
-    private Random random = new Random();
-
+    private final List<GameObject> stars = new ArrayList<>();
+    private final List<GameObject> boosters = new ArrayList<>();
+    private final List<GameObject> asteroids = new ArrayList<>();
+    private final Random random = new Random();
     private boolean isInitialized = false;
     private boolean isGameOver = false;
-
     private int score = 0;
     private int level = 1;
-
     private float rocketScreenY;
-
-    private final float COLLISION_TOLERANCE = 20f;
 
     public GameView(Context context) {
         super(context);
@@ -79,6 +65,12 @@ public class GameView extends View {
                     rocketScreenY = getHeight() * 0.7f;
                     rocketY = rocketScreenY;
 
+                    scaledRocket = Bitmap.createScaledBitmap(rocketBitmap, (int) rocketWidth, (int) rocketHeight, false);
+                    scaledStar = Bitmap.createScaledBitmap(starBitmap, 80, 80, false);
+                    scaledBooster = Bitmap.createScaledBitmap(boosterBitmap, 80, 80, false);
+                    scaledAsteroid = Bitmap.createScaledBitmap(asteroidBitmap, 120, 120, false);
+                    scaledBackground = Bitmap.createScaledBitmap(backgroundBitmap, getWidth(), getHeight(), false);
+
                     for (int i = 0; i < maxStars(); i++) spawnStar();
                     for (int i = 0; i < maxBoosters(); i++) spawnBooster();
                     for (int i = 0; i < maxAsteroids(); i++) spawnAsteroid();
@@ -92,25 +84,20 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         if (!isInitialized || isGameOver) return;
 
-        if (backgroundBitmap != null) {
-            canvas.drawBitmap(backgroundBitmap, 0, 0, null);
+        if (scaledBackground != null) {
+            canvas.drawBitmap(scaledBackground, 0, 0, null);
         } else {
             canvas.drawColor(Color.BLACK);
         }
 
         rocketY = rocketScreenY;
-        if (rocketBitmap != null) {
-            try {
-                Bitmap scaledRocket = Bitmap.createScaledBitmap(rocketBitmap, (int) rocketWidth, (int) rocketHeight, false);
-                canvas.drawBitmap(scaledRocket, rocketX, rocketY, null);
-            } catch (Exception e) {
-                // Bitmap hatası durumunda basit bir dikdörtgen çiz
-                paint.setColor(Color.WHITE);
-                canvas.drawRect(rocketX, rocketY, rocketX + rocketWidth, rocketY + rocketHeight, paint);
-            }
+        if (scaledRocket != null) {
+            canvas.drawBitmap(scaledRocket, rocketX, rocketY, null);
+        } else {
+            paint.setColor(Color.WHITE);
+            canvas.drawRect(rocketX, rocketY, rocketX + rocketWidth, rocketY + rocketHeight, paint);
         }
 
         updateAndDrawObjects(canvas);
@@ -120,26 +107,27 @@ public class GameView extends View {
         canvas.drawText("Score: " + score, 50, 100, paint);
         canvas.drawText("Level: " + level, getWidth() - 300, 100, paint);
 
-        if (score >= level * 10) level++;
+        level = score / 10 + 1;
 
         if (!isGameOver) {
             postInvalidateOnAnimation();
         }
     }
-
     private void updateAndDrawObjects(Canvas canvas) {
         List<GameObject> starsToRemove = new ArrayList<>();
+        float baseVelocityY = 5;
         for (GameObject star : stars) {
             star.y += baseVelocityY + boostVelocity;
 
-            if (checkCollisionWithTolerance(star.x, star.y, star.size, star.size, rocketX, rocketY, rocketWidth, rocketHeight, 0)) {
+            if (checkCollisionWithTolerance(star.x, star.y, star.size, star.size,
+                    rocketX, rocketY, rocketWidth, rocketHeight, 0)) {
                 starsToRemove.add(star);
                 score++;
             } else if (star.y > getHeight()) {
                 starsToRemove.add(star);
             }
 
-            drawGameObject(canvas, starBitmap, star, Color.YELLOW);
+            drawGameObject(canvas, scaledStar, star, Color.YELLOW);
         }
         stars.removeAll(starsToRemove);
         while (stars.size() < maxStars()) spawnStar();
@@ -148,14 +136,15 @@ public class GameView extends View {
         for (GameObject booster : boosters) {
             booster.y += baseVelocityY + boostVelocity;
 
-            if (checkCollisionWithTolerance(booster.x, booster.y, booster.size, booster.size, rocketX, rocketY, rocketWidth, rocketHeight, 0)) {
+            if (checkCollisionWithTolerance(booster.x, booster.y, booster.size, booster.size,
+                    rocketX, rocketY, rocketWidth, rocketHeight, 0)) {
                 boostersToRemove.add(booster);
                 activateSpeedBoost();
             } else if (booster.y > getHeight()) {
                 boostersToRemove.add(booster);
             }
 
-            drawGameObject(canvas, boosterBitmap, booster, Color.GREEN);
+            drawGameObject(canvas, scaledBooster, booster, Color.GREEN);
         }
         boosters.removeAll(boostersToRemove);
         while (boosters.size() < maxBoosters()) spawnBooster();
@@ -164,9 +153,10 @@ public class GameView extends View {
         for (GameObject asteroid : asteroids) {
             asteroid.y += baseVelocityY + boostVelocity;
 
-            if (checkCollisionWithTolerance(asteroid.x, asteroid.y, asteroid.size, asteroid.size, rocketX, rocketY, rocketWidth, rocketHeight, COLLISION_TOLERANCE)) {
+            float COLLISION_TOLERANCE = 20f;
+            if (checkCollisionWithTolerance(asteroid.x, asteroid.y, asteroid.size, asteroid.size,
+                    rocketX, rocketY, rocketWidth, rocketHeight, COLLISION_TOLERANCE)) {
                 isGameOver = true;
-
                 post(() -> {
                     if (gameEventListener != null) {
                         gameEventListener.onGameOver(score);
@@ -176,7 +166,7 @@ public class GameView extends View {
             } else if (asteroid.y > getHeight()) {
                 asteroidsToRemove.add(asteroid);
             }
-            drawGameObject(canvas, asteroidBitmap, asteroid, Color.RED);
+            drawGameObject(canvas, scaledAsteroid, asteroid, Color.RED);
         }
         asteroids.removeAll(asteroidsToRemove);
         while (asteroids.size() < maxAsteroids()) spawnAsteroid();
@@ -184,24 +174,14 @@ public class GameView extends View {
 
     private void drawGameObject(Canvas canvas, Bitmap bitmap, GameObject gameObject, int fallbackColor) {
         if (bitmap != null) {
-            try {
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) gameObject.size, (int) gameObject.size, false);
-                canvas.drawBitmap(scaledBitmap, gameObject.x, gameObject.y, null);
-            } catch (Exception e) {
-                paint.setColor(fallbackColor);
-                canvas.drawRect(gameObject.x, gameObject.y,
-                        gameObject.x + gameObject.size, gameObject.y + gameObject.size, paint);
-            }
+            canvas.drawBitmap(bitmap, gameObject.x, gameObject.y, null);
         } else {
             paint.setColor(fallbackColor);
             canvas.drawRect(gameObject.x, gameObject.y,
                     gameObject.x + gameObject.size, gameObject.y + gameObject.size, paint);
         }
     }
-    private boolean checkCollision(float x1, float y1, float size1, float x2, float y2, float size2) {
-        return x1 + size1 > x2 && x1 < x2 + size2 &&
-                y1 + size1 > y2 && y1 < y2 + size2;
-    }
+
     private boolean checkCollisionWithTolerance(float x1, float y1, float width1, float height1,
                                                 float x2, float y2, float width2, float height2, float tolerance) {
         float adjustedX1 = x1 + tolerance;
@@ -219,7 +199,6 @@ public class GameView extends View {
         return adjustedX1 + adjustedWidth1 > adjustedX2 && adjustedX1 < adjustedX2 + adjustedWidth2 &&
                 adjustedY1 + adjustedHeight1 > adjustedY2 && adjustedY1 < adjustedY2 + adjustedHeight2;
     }
-
     private int maxStars() { return Math.min(3 + level, 7); }
     private int maxBoosters() { return Math.min(1 + level / 2, 3); }
     private int maxAsteroids() { return Math.min(1 + level, 5); }
@@ -229,52 +208,28 @@ public class GameView extends View {
             stars.add(new GameObject(random.nextInt(getWidth() - 80), -200, 80, 0));
         }
     }
-
     private void spawnBooster() {
         if (getWidth() > 80) {
             boosters.add(new GameObject(random.nextInt(getWidth() - 80), -300, 80, 0));
         }
     }
-
     private void spawnAsteroid() {
         if (getWidth() > 120) {
             asteroids.add(new GameObject(random.nextInt(getWidth() - 120), -400, 120, 0));
         }
     }
-
     public void moveRocket(float direction) {
         if (isGameOver) return;
 
         rocketX += direction;
-
         if (rocketX < 0) rocketX = 0;
         if (rocketX > getWidth() - rocketWidth) rocketX = getWidth() - rocketWidth;
     }
-
     public void activateSpeedBoost() {
         if (isGameOver) return;
 
         boostVelocity = 8;
         postDelayed(() -> boostVelocity = 0, 1000);
-    }
-    public void resetGame() {
-        isGameOver = false;
-        score = 0;
-        level = 1;
-        boostVelocity = 0;
-
-        stars.clear();
-        boosters.clear();
-        asteroids.clear();
-
-        if (isInitialized) {
-            rocketX = getWidth() / 2f - rocketWidth / 2f;
-            rocketY = rocketScreenY;
-
-            for (int i = 0; i < maxStars(); i++) spawnStar();
-            for (int i = 0; i < maxBoosters(); i++) spawnBooster();
-            for (int i = 0; i < maxAsteroids(); i++) spawnAsteroid();
-        }
     }
 
     private static class GameObject {

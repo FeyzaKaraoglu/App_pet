@@ -16,25 +16,21 @@ public class MiniGameActivity extends AppCompatActivity implements SensorEventLi
     private SensorManager sensorManager;
     private Sensor accelerometer;
 
-    private float tiltX;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         gameView = new GameView(this);
-        gameView.setGameEventListener(score -> {
-            runOnUiThread(() -> {
-                try {
-                    Intent intent = new Intent(MiniGameActivity.this, ScoreActivity.class);
-                    intent.putExtra("score", score);
-                    startActivity(intent);
-                    finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        });
+        gameView.setGameEventListener(score -> runOnUiThread(() -> {
+            try {
+                Intent intent = new Intent(MiniGameActivity.this, ScoreActivity.class);
+                intent.putExtra("score", score);
+                startActivity(intent);
+                finish();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }));
 
         setContentView(gameView);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -63,7 +59,7 @@ public class MiniGameActivity extends AppCompatActivity implements SensorEventLi
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
-            tiltX = -x * 5;
+            float tiltX = -x * 5;
             if (gameView != null) {
                 gameView.moveRocket(tiltX);
             }

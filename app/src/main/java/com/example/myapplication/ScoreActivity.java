@@ -13,20 +13,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ScoreActivity extends AppCompatActivity {
 
-    private TextView scoreText;
-    private TextView highScoreText;
-    private Button retryButton;
-    private Button mainMenuButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.score_activity);
 
-        scoreText = findViewById(R.id.scoreText);
-        highScoreText = findViewById(R.id.highScoreText);
-        retryButton = findViewById(R.id.retryButton);
-        mainMenuButton = findViewById(R.id.retryButton2);
+        TextView scoreText = findViewById(R.id.scoreText);
+        TextView highScoreText = findViewById(R.id.highScoreText);
+        Button retryButton = findViewById(R.id.retryButton);
+        Button mainMenuButton = findViewById(R.id.retryButton2);
         scoreText.setText(getString(R.string.your_score_placeholder));
         highScoreText.setText(getString(R.string.high_score_placeholder));
 

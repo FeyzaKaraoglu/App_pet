@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyApp</string>
+    <string name="app_name">ActivPet</string>
 
     <!-- General Goals -->
     <string name="goal_saved">Goal saved: %1$d minutes</string>

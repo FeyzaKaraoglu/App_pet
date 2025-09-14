@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyApp</string>
+    <string name="app_name">ActivPet</string>
 
     <!-- Genel Hedefler -->
     <string name="goal_saved">Hedef kaydedildi: %1$d dakika</string>
