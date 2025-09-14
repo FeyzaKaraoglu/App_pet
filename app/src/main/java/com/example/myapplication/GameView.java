@@ -8,10 +8,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 import android.view.ViewTreeObserver;
-
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import androidx.annotation.NonNull;
 
 public class GameView extends View {
 
@@ -53,7 +54,7 @@ public class GameView extends View {
             asteroidBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.asteroid);
             backgroundBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.spacebackground);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("GameView", "Error loading bitmaps", e);
         }
 
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -82,7 +83,7 @@ public class GameView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         if (!isInitialized || isGameOver) return;
 
