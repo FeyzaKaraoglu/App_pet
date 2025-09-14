@@ -320,11 +320,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void resetDailyProgress() {
+        // Clear main activity preferences
         goalPrefs.edit().clear().apply();
         fuelPrefs.edit().clear().apply();
+
+        // Clear individual goal activity preferences with correct names
+        getSharedPreferences("waterPrefs", MODE_PRIVATE).edit().clear().apply();
+        getSharedPreferences("stepsPrefs", MODE_PRIVATE).edit().clear().apply();
+        getSharedPreferences("SleepPrefs", MODE_PRIVATE).edit().clear().apply();  // Note: Capital S
+        getSharedPreferences("FocusPrefs", MODE_PRIVATE).edit().clear().apply();  // Note: Capital F
+
+        // Call forceResetFromMain() methods if activities are running
+        if (FocusGoalActivity.instance != null) {
+            FocusGoalActivity.instance.forceResetFromMain();
+        }
+        if (SleepGoalActivity.instance != null) {
+            SleepGoalActivity.instance.forceResetFromMain();
+        }
+        if (StepsGoalActivity.instance != null) {
+            StepsGoalActivity.instance.forceResetFromMain();
+        }
+
+        // Clear any other app-wide preferences except language settings
+        SharedPreferences appPrefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        String savedLanguage = appPrefs.getString("app_language", "en");
+        appPrefs.edit().clear().apply();
+        appPrefs.edit().putString("app_language", savedLanguage).apply();
+
+        // Reinitialize the data
         checkDailyReset();
         updateGoalChart();
         updateFuelDisplay();
+        updatePetName();
+        updatePetColor();
+
         Toast.makeText(this, getString(R.string.progress_reset_success), Toast.LENGTH_SHORT).show();
     }
 
