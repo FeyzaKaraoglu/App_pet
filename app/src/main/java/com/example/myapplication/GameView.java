@@ -34,8 +34,8 @@ public class GameView extends View {
 
     private float rocketX;
     private float rocketY;
-    private float rocketWidth = 140;  // Roket genişliği (daha ince)
-    private float rocketHeight = 200; // Roket yüksekliği (daha uzun)
+    private float rocketWidth = 140;
+    private float rocketHeight = 200;
 
     private float rocketSpeedX = 15;
     private float baseVelocityY = 5;
@@ -54,14 +54,12 @@ public class GameView extends View {
 
     private float rocketScreenY;
 
-    // Çarpışma mesafesi için tolerans değeri
     private final float COLLISION_TOLERANCE = 20f;
 
     public GameView(Context context) {
         super(context);
         paint = new Paint();
 
-        // Bitmap yükleme hatalarını kontrol et
         try {
             rocketBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.rocket);
             starBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.star);
@@ -97,14 +95,12 @@ public class GameView extends View {
 
         if (!isInitialized || isGameOver) return;
 
-        // Arkaplan çiz
         if (backgroundBitmap != null) {
             canvas.drawBitmap(backgroundBitmap, 0, 0, null);
         } else {
             canvas.drawColor(Color.BLACK);
         }
 
-        // Roket çiz
         rocketY = rocketScreenY;
         if (rocketBitmap != null) {
             try {
@@ -117,10 +113,8 @@ public class GameView extends View {
             }
         }
 
-        // Objeleri güncelle ve çiz
         updateAndDrawObjects(canvas);
 
-        // Skor ve level yazdır
         paint.setColor(Color.WHITE);
         paint.setTextSize(60);
         canvas.drawText("Score: " + score, 50, 100, paint);
@@ -128,14 +122,12 @@ public class GameView extends View {
 
         if (score >= level * 10) level++;
 
-        // Oyun bitmediyse animasyonu devam ettir
         if (!isGameOver) {
             postInvalidateOnAnimation();
         }
     }
 
     private void updateAndDrawObjects(Canvas canvas) {
-        // --- Stars ---
         List<GameObject> starsToRemove = new ArrayList<>();
         for (GameObject star : stars) {
             star.y += baseVelocityY + boostVelocity;
@@ -147,13 +139,11 @@ public class GameView extends View {
                 starsToRemove.add(star);
             }
 
-            // Star çiz
             drawGameObject(canvas, starBitmap, star, Color.YELLOW);
         }
         stars.removeAll(starsToRemove);
         while (stars.size() < maxStars()) spawnStar();
 
-        // --- Boosters ---
         List<GameObject> boostersToRemove = new ArrayList<>();
         for (GameObject booster : boosters) {
             booster.y += baseVelocityY + boostVelocity;
@@ -165,23 +155,18 @@ public class GameView extends View {
                 boostersToRemove.add(booster);
             }
 
-            // Booster çiz
             drawGameObject(canvas, boosterBitmap, booster, Color.GREEN);
         }
         boosters.removeAll(boostersToRemove);
         while (boosters.size() < maxBoosters()) spawnBooster();
 
-        // --- Asteroids ---
         List<GameObject> asteroidsToRemove = new ArrayList<>();
         for (GameObject asteroid : asteroids) {
             asteroid.y += baseVelocityY + boostVelocity;
 
-            // Asteroidler için daha sıkı çarpışma kontrolü (tolerans kullan)
             if (checkCollisionWithTolerance(asteroid.x, asteroid.y, asteroid.size, asteroid.size, rocketX, rocketY, rocketWidth, rocketHeight, COLLISION_TOLERANCE)) {
-                // Oyun bitişini işaretle
                 isGameOver = true;
 
-                // Callback'i post ile güvenli şekilde çağır
                 post(() -> {
                     if (gameEventListener != null) {
                         gameEventListener.onGameOver(score);
@@ -191,8 +176,6 @@ public class GameView extends View {
             } else if (asteroid.y > getHeight()) {
                 asteroidsToRemove.add(asteroid);
             }
-
-            // Asteroid çiz
             drawGameObject(canvas, asteroidBitmap, asteroid, Color.RED);
         }
         asteroids.removeAll(asteroidsToRemove);
@@ -205,40 +188,30 @@ public class GameView extends View {
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) gameObject.size, (int) gameObject.size, false);
                 canvas.drawBitmap(scaledBitmap, gameObject.x, gameObject.y, null);
             } catch (Exception e) {
-                // Bitmap hatası durumunda renkli dikdörtgen çiz
                 paint.setColor(fallbackColor);
                 canvas.drawRect(gameObject.x, gameObject.y,
                         gameObject.x + gameObject.size, gameObject.y + gameObject.size, paint);
             }
         } else {
-            // Bitmap null ise renkli dikdörtgen çiz
             paint.setColor(fallbackColor);
             canvas.drawRect(gameObject.x, gameObject.y,
                     gameObject.x + gameObject.size, gameObject.y + gameObject.size, paint);
         }
     }
-
-    // Eski çarpışma kontrolü (referans için saklı)
     private boolean checkCollision(float x1, float y1, float size1, float x2, float y2, float size2) {
         return x1 + size1 > x2 && x1 < x2 + size2 &&
                 y1 + size1 > y2 && y1 < y2 + size2;
     }
-
-    // Yeni toleranslı çarpışma kontrolü - hem kare hem dikdörtgen nesneler için
     private boolean checkCollisionWithTolerance(float x1, float y1, float width1, float height1,
                                                 float x2, float y2, float width2, float height2, float tolerance) {
-        // Her iki nesnenin de kenarlarına tolerans ekle
         float adjustedX1 = x1 + tolerance;
         float adjustedY1 = y1 + tolerance;
         float adjustedWidth1 = width1 - (tolerance * 2);
         float adjustedHeight1 = height1 - (tolerance * 2);
-
         float adjustedX2 = x2 + tolerance;
         float adjustedY2 = y2 + tolerance;
         float adjustedWidth2 = width2 - (tolerance * 2);
         float adjustedHeight2 = height2 - (tolerance * 2);
-
-        // Negatif boyut kontrolü
         if (adjustedWidth1 <= 0 || adjustedHeight1 <= 0 || adjustedWidth2 <= 0 || adjustedHeight2 <= 0) {
             return false;
         }
@@ -270,7 +243,7 @@ public class GameView extends View {
     }
 
     public void moveRocket(float direction) {
-        if (isGameOver) return; // Oyun bittiyse hareket etme
+        if (isGameOver) return;
 
         rocketX += direction;
 
@@ -279,13 +252,11 @@ public class GameView extends View {
     }
 
     public void activateSpeedBoost() {
-        if (isGameOver) return; // Oyun bittiyse boost verme
+        if (isGameOver) return;
 
         boostVelocity = 8;
         postDelayed(() -> boostVelocity = 0, 1000);
     }
-
-    // Oyunu yeniden başlatmak için
     public void resetGame() {
         isGameOver = false;
         score = 0;

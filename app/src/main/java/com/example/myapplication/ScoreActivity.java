@@ -27,32 +27,23 @@ public class ScoreActivity extends AppCompatActivity {
         highScoreText = findViewById(R.id.highScoreText);
         retryButton = findViewById(R.id.retryButton);
         mainMenuButton = findViewById(R.id.retryButton2);
-
-        // Placeholder olarak başlangıçta göster
         scoreText.setText(getString(R.string.your_score_placeholder));
         highScoreText.setText(getString(R.string.high_score_placeholder));
 
         int score = getIntent().getIntExtra("score", 0);
-
-        // High score kontrolü
         SharedPreferences prefs = getSharedPreferences("game_prefs", Context.MODE_PRIVATE);
         int highScore = prefs.getInt("high_score", 0);
         if (score > highScore) {
             highScore = score;
             prefs.edit().putInt("high_score", highScore).apply();
         }
-
-        // Skorları güncelle (çok dilli)
         scoreText.setText(getString(R.string.your_score, score));
         highScoreText.setText(getString(R.string.high_score, highScore));
-
-        // Retry butonu: fuel kontrolü
         retryButton.setOnClickListener(v -> {
             SharedPreferences fuelPrefs = getSharedPreferences("fuelPrefs", Context.MODE_PRIVATE);
             int currentFuel = fuelPrefs.getInt("totalFuel", 0);
 
             if (currentFuel > 0) {
-                // Fuel varsa 1 fuel harca ve oyunu başlat
                 fuelPrefs.edit().putInt("totalFuel", currentFuel - 1).apply();
 
                 Intent intent = new Intent(ScoreActivity.this, MiniGameActivity.class);
@@ -82,8 +73,6 @@ public class ScoreActivity extends AppCompatActivity {
                 MainActivity.context.updateFuelDisplay();
             }
         });
-
-        // Main Menu butonu
         mainMenuButton.setOnClickListener(v -> {
             Intent intent = new Intent(ScoreActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

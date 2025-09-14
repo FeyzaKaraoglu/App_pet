@@ -37,8 +37,6 @@ public class LanguageActivity extends AppCompatActivity {
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
         prefs.edit().putString("app_language", langCode).apply();
-
-        // Uygulamayı yeniden başlat
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

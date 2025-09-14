@@ -162,7 +162,6 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
 
         Toast.makeText(this, getString(R.string.sleep_session_recorded, minutesElapsed), Toast.LENGTH_SHORT).show();
 
-        // 🔥 Fuel ekleme
         if (!goalCompleted && (totalSleptMinutes / 60 >= goalHours)) {
             goalCompleted = true;
             goalPrefs.edit().putBoolean("sleepCompleted", true).apply();

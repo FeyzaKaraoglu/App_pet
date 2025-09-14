@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        applyLanguageSettings(); // Dil ayarını uygula
+        applyLanguageSettings();
 
         setContentView(R.layout.activity_main);
         context = this;
@@ -59,16 +59,11 @@ public class MainActivity extends AppCompatActivity {
         updateFuelDisplay();
         updatePetColor();
     }
-
-    // -----------------------------
-    // DİL AYARI METOTLARI
-    // -----------------------------
     private void applyLanguageSettings() {
         SharedPreferences prefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
         String langCode = prefs.getString("app_language", "en");
         setAppLocale(langCode);
     }
-
     private void setAppLocale(String langCode) {
         Locale locale = new Locale(langCode);
         Locale.setDefault(locale);
@@ -76,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
         config.setLocale(locale);
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
-    // -----------------------------
-
     private void initializeViews() {
         btnSettings = findViewById(R.id.btnSettings);
         btnGoals = findViewById(R.id.btnGoals);
@@ -92,12 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
         petNameView = findViewById(R.id.textView);
     }
-
     private void setupPreferences() {
         goalPrefs = getSharedPreferences("goalCompletionPrefs", MODE_PRIVATE);
         fuelPrefs = getSharedPreferences("fuelPrefs", MODE_PRIVATE);
     }
-
     private void checkDailyReset() {
         String today = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(new Date());
         String savedDate = goalPrefs.getString("lastGoalDate", today);
@@ -116,14 +107,12 @@ public class MainActivity extends AppCompatActivity {
 
         loadGoalCompletionStatus();
     }
-
     private void loadGoalCompletionStatus() {
         waterGoalCompleted = goalPrefs.getBoolean("waterCompleted", false);
         stepsGoalCompleted = goalPrefs.getBoolean("stepsCompleted", false);
         sleepGoalCompleted = goalPrefs.getBoolean("sleepCompleted", false);
         focusGoalCompleted = goalPrefs.getBoolean("focusCompleted", false);
     }
-
     private void updateGoalChart() {
         loadGoalCompletionStatus();
         updateLifeIndicator(lvl1, waterGoalCompleted, "");
@@ -133,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
 
         updatePetName();
     }
-
     private void updateLifeIndicator(TextView lifeView, boolean completed, String emoji) {
         if (completed) {
             lifeView.setText(emoji);
@@ -143,13 +131,11 @@ public class MainActivity extends AppCompatActivity {
             lifeView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray));
         }
     }
-
     public void updateFuelDisplay() {
         int currentFuel = fuelPrefs.getInt("totalFuel", 0);
         fuelCountText.setText(" " + currentFuel);
         updatePetName();
     }
-
     public void markGoalCompleted(String goalType) {
         SharedPreferences.Editor goalEditor = goalPrefs.edit();
 
@@ -188,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
         updateGoalChart();
         updateFuelDisplay();
     }
-
     public static void consumeFuel(int amount) {
         if (context != null) {
             int currentFuel = context.fuelPrefs.getInt("totalFuel", 0);
@@ -197,11 +182,9 @@ public class MainActivity extends AppCompatActivity {
             context.updateFuelDisplay();
         }
     }
-
     private void showGoalCompletedMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
-
     private void setupClickListeners() {
         btnSettings.setOnClickListener(v -> showSettingsDialog());
         btnGoals.setOnClickListener(v -> showGoalsDialog());
@@ -224,10 +207,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    // -----------------------------
-    // SETTINGS DIALOG
-    // -----------------------------
     private void showSettingsDialog() {
         String[] settingsOptions = {
                 getString(R.string.settings_language),
@@ -248,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
     }
-
     private void showLanguageDialog() {
         String[] languages = {"🇺🇸 English", "🇹🇷 Türkçe", "🇩🇪 Deutsch"};
         final String[] langCodes = {"en","tr","de"};
@@ -263,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
     }
-
     private void showPetNameDialog() {
         EditText input = new EditText(this);
         input.setHint(getString(R.string.pet_name_hint));
@@ -282,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         builder.show();
     }
-
     private void showColorDialog() {
         String[] colors = {
                 getString(R.string.dialog_color_purple),
@@ -309,7 +285,6 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
     }
-
     private void confirmResetProgress() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.reset_progress_title));
@@ -318,19 +293,14 @@ public class MainActivity extends AppCompatActivity {
         builder.setNegativeButton(getString(R.string.no), (dialog, which) -> dialog.dismiss());
         builder.show();
     }
-
     private void resetDailyProgress() {
-        // Clear main activity preferences
         goalPrefs.edit().clear().apply();
         fuelPrefs.edit().clear().apply();
-
-        // Clear individual goal activity preferences with correct names
         getSharedPreferences("waterPrefs", MODE_PRIVATE).edit().clear().apply();
         getSharedPreferences("stepsPrefs", MODE_PRIVATE).edit().clear().apply();
-        getSharedPreferences("SleepPrefs", MODE_PRIVATE).edit().clear().apply();  // Note: Capital S
-        getSharedPreferences("FocusPrefs", MODE_PRIVATE).edit().clear().apply();  // Note: Capital F
+        getSharedPreferences("SleepPrefs", MODE_PRIVATE).edit().clear().apply();
+        getSharedPreferences("FocusPrefs", MODE_PRIVATE).edit().clear().apply();
 
-        // Call forceResetFromMain() methods if activities are running
         if (FocusGoalActivity.instance != null) {
             FocusGoalActivity.instance.forceResetFromMain();
         }
@@ -340,14 +310,11 @@ public class MainActivity extends AppCompatActivity {
         if (StepsGoalActivity.instance != null) {
             StepsGoalActivity.instance.forceResetFromMain();
         }
-
-        // Clear any other app-wide preferences except language settings
         SharedPreferences appPrefs = getSharedPreferences("app_prefs", MODE_PRIVATE);
         String savedLanguage = appPrefs.getString("app_language", "en");
         appPrefs.edit().clear().apply();
         appPrefs.edit().putString("app_language", savedLanguage).apply();
 
-        // Reinitialize the data
         checkDailyReset();
         updateGoalChart();
         updateFuelDisplay();
@@ -356,10 +323,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(this, getString(R.string.progress_reset_success), Toast.LENGTH_SHORT).show();
     }
-
-    // -----------------------------
-    // GOALS
-    // -----------------------------
     private void showNoFuelDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.no_fuel_title));
@@ -388,7 +351,6 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.show();
     }
-
     private void updatePetColor() {
         String color = goalPrefs.getString("petColor", "Green");
         ImageView petImage = findViewById(R.id.petImage);
@@ -399,7 +361,6 @@ public class MainActivity extends AppCompatActivity {
             default: petImage.setImageResource(R.drawable.pet_green); break;
         }
     }
-
     private void updatePetName() {
         try {
             String savedPetName = goalPrefs.getString("petName", getString(R.string.default_pet_name));

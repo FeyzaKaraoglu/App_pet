@@ -16,17 +16,14 @@ public class MiniGameActivity extends AppCompatActivity implements SensorEventLi
     private SensorManager sensorManager;
     private Sensor accelerometer;
 
-    private float tiltX; // cihazın eğimi X ekseninde
+    private float tiltX;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         gameView = new GameView(this);
-
-        // Callback ile oyun bittiğinde ScoreActivity aç
         gameView.setGameEventListener(score -> {
-            // UI thread'de çalıştığımızdan emin ol
             runOnUiThread(() -> {
                 try {
                     Intent intent = new Intent(MiniGameActivity.this, ScoreActivity.class);
@@ -40,8 +37,6 @@ public class MiniGameActivity extends AppCompatActivity implements SensorEventLi
         });
 
         setContentView(gameView);
-
-        // Sensörleri ayarla
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (sensorManager != null) {
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -68,22 +63,16 @@ public class MiniGameActivity extends AppCompatActivity implements SensorEventLi
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
-
-            // x negatifse sola, pozitifse sağa hareket
-            tiltX = -x * 5; // hız katsayısı, isteğe göre ayarla
-
-            // Roketi güncelle
+            tiltX = -x * 5;
             if (gameView != null) {
                 gameView.moveRocket(tiltX);
             }
         }
     }
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // gerek yok
+        // no need
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
