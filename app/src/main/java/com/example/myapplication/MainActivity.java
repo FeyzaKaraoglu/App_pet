@@ -115,10 +115,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void updateGoalChart() {
         loadGoalCompletionStatus();
-        updateLifeIndicator(lvl1, waterGoalCompleted, "");
-        updateLifeIndicator(lvl2, stepsGoalCompleted, "");
-        updateLifeIndicator(lvl3, sleepGoalCompleted, "");
-        updateLifeIndicator(lvl4, focusGoalCompleted, "");
+        updateLifeIndicator(lvl1, waterGoalCompleted, "💧");
+        updateLifeIndicator(lvl2, stepsGoalCompleted, "👣");
+        updateLifeIndicator(lvl3, sleepGoalCompleted, "😴");
+        updateLifeIndicator(lvl4, focusGoalCompleted, "🎯");
+
 
         updatePetName();
     }
@@ -135,44 +136,6 @@ public class MainActivity extends AppCompatActivity {
         int currentFuel = fuelPrefs.getInt("totalFuel", 0);
         fuelCountText.setText(" " + currentFuel);
         updatePetName();
-    }
-    public void markGoalCompleted(String goalType) {
-        SharedPreferences.Editor goalEditor = goalPrefs.edit();
-
-        switch (goalType.toLowerCase()) {
-            case "water":
-                if (!waterGoalCompleted) {
-                    goalEditor.putBoolean("waterCompleted", true);
-                    waterGoalCompleted = true;
-                    showGoalCompletedMessage(getString(R.string.water_goal_completed));
-                }
-                break;
-            case "steps":
-                if (!stepsGoalCompleted) {
-                    goalEditor.putBoolean("stepsCompleted", true);
-                    stepsGoalCompleted = true;
-                    showGoalCompletedMessage(getString(R.string.steps_goal_completed));
-                }
-                break;
-            case "sleep":
-                if (!sleepGoalCompleted) {
-                    goalEditor.putBoolean("sleepCompleted", true);
-                    sleepGoalCompleted = true;
-                    showGoalCompletedMessage(getString(R.string.sleep_goal_completed));
-                }
-                break;
-            case "focus":
-                if (!focusGoalCompleted) {
-                    goalEditor.putBoolean("focusCompleted", true);
-                    focusGoalCompleted = true;
-                    showGoalCompletedMessage(getString(R.string.focus_goal_completed));
-                }
-                break;
-        }
-
-        goalEditor.apply();
-        updateGoalChart();
-        updateFuelDisplay();
     }
     public static void consumeFuel(int amount) {
         if (context != null) {

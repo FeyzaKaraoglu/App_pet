@@ -39,9 +39,9 @@ public class SleepGoalActivity extends AppCompatActivity implements SensorEventL
     private boolean lightThresholdMet = false;
     private boolean movementThresholdMet = false;
     private long lastWakeCheckTime = 0;
-    private static final long WAKE_CHECK_COOLDOWN = 5000; // 5 seconds cooldown
-    private static final float LIGHT_WAKE_THRESHOLD = 30.0f; // lux
-    private static final float MOVEMENT_WAKE_THRESHOLD = 2.0f; // m/s²
+    private static final long WAKE_CHECK_COOLDOWN = 5000;
+    private static final float LIGHT_WAKE_THRESHOLD = 30.0f;
+    private static final float MOVEMENT_WAKE_THRESHOLD = 2.0f;
 
     Handler handler = new Handler();
     long startTime;
